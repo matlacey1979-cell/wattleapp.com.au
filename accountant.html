@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Financial Records — MyWattle</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f4f4f5; color: #111827; min-height: 100vh; }
+
+    .header { background: #1D4ED8; padding: 20px 24px; display: flex; align-items: center; gap: 12px; }
+    .header-logo { color: #fff; font-size: 20px; font-weight: 700; }
+    .header-sub { color: #93C5FD; font-size: 14px; margin-top: 2px; }
+
+    .container { max-width: 860px; margin: 0 auto; padding: 32px 20px; }
+
+    .worker-card { background: #fff; border-radius: 14px; padding: 24px; margin-bottom: 28px; border: 1px solid #E5E7EB; }
+    .worker-name { font-size: 22px; font-weight: 700; color: #111827; }
+    .worker-meta { font-size: 14px; color: #6B7280; margin-top: 4px; }
+
+    .tabs { display: flex; gap: 4px; margin-bottom: 20px; background: #E5E7EB; border-radius: 10px; padding: 4px; width: fit-content; }
+    .tab { padding: 8px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; color: #6B7280; border: none; background: none; }
+    .tab.active { background: #fff; color: #111827; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+
+    .summary-row { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .summary-card { flex: 1; min-width: 140px; background: #fff; border-radius: 12px; padding: 18px 20px; border: 1px solid #E5E7EB; }
+    .summary-label { font-size: 12px; color: #6B7280; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
+    .summary-value { font-size: 22px; font-weight: 700; color: #111827; font-variant-numeric: tabular-nums; }
+
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; border: 1px solid #E5E7EB; }
+    th { background: #F9FAFB; padding: 12px 16px; text-align: left; font-size: 12px; font-weight: 600; color: #6B7280; text-transform: uppercase; letter-spacing: 0.04em; border-bottom: 1px solid #E5E7EB; }
+    td { padding: 14px 16px; font-size: 14px; color: #374151; border-bottom: 1px solid #F3F4F6; }
+    tr:last-child td { border-bottom: none; }
+    .text-right { text-align: right; }
+    .mono { font-variant-numeric: tabular-nums; }
+
+    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+    .badge-paid { background: #D1FAE5; color: #065F46; }
+    .badge-sent { background: #DBEAFE; color: #1E40AF; }
+    .badge-draft { background: #F3F4F6; color: #6B7280; }
+    .badge-cancelled { background: #FEE2E2; color: #991B1B; }
+
+    .error-state, .loading-state { text-align: center; padding: 80px 20px; }
+    .error-title { font-size: 20px; font-weight: 600; color: #111827; margin-bottom: 8px; }
+    .error-sub { font-size: 15px; color: #6B7280; }
+    .spinner { width: 36px; height: 36px; border: 3px solid #E5E7EB; border-top-color: #1D4ED8; border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .panel { display: none; }
+    .panel.active { display: block; }
+
+    .footer { text-align: center; padding: 32px 20px; font-size: 12px; color: #9CA3AF; }
+
+    @media (max-width: 600px) {
+      th:nth-child(3), td:nth-child(3) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <div>
+    <div class="header-logo">MyWattle</div>
+    <div class="header-sub">Read-only financial records</div>
+  </div>
+</div>
+
+<div id="loading" class="loading-state container">
+  <div class="spinner"></div>
+  <p style="color:#6B7280;font-size:15px;">Loading records…</p>
+</div>
+
+<div id="error" class="error-state container" style="display:none;">
+  <div class="error-title" id="error-title">Link not found</div>
+  <div class="error-sub" id="error-sub">This link may have expired or is invalid. Ask your worker to send a new invite.</div>
+</div>
+
+<div id="main" class="container" style="display:none;">
+  <div class="worker-card">
+    <div class="worker-name" id="worker-name"></div>
+    <div class="worker-meta" id="worker-meta"></div>
+  </div>
+
+  <div class="summary-row" id="summary-row"></div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showPanel('invoices')">Invoices</button>
+    <button class="tab" onclick="showPanel('expenses')">Expenses</button>
+  </div>
+
+  <div id="panel-invoices" class="panel active">
+    <table>
+      <thead>
+        <tr>
+          <th>Invoice</th>
+          <th>Participant</th>
+          <th>Date</th>
+          <th>Status</th>
+          <th class="text-right">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="invoices-body"></tbody>
+    </table>
+  </div>
+
+  <div id="panel-expenses" class="panel">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Description</th>
+          <th>Category</th>
+          <th class="text-right">Amount</th>
+        </tr>
+      </thead>
+      <tbody id="expenses-body"></tbody>
+    </table>
+  </div>
+</div>
+
+<div class="footer">MyWattle · wattleapp.com.au · Read-only view · Data provided by the worker</div>
+
+<script>
+  const SUPABASE_URL = 'https://dinrotnbxisxxqlpefmd.supabase.co';
+
+  function showPanel(name) {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.getElementById('panel-' + name).classList.add('active');
+    event.target.classList.add('active');
+  }
+
+  function fmt(amount) {
+    return '$' + Number(amount || 0).toLocaleString('en-AU', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+
+  function fmtDate(d) {
+    if (!d) return '—';
+    return new Date(d).toLocaleDateString('en-AU', { day: 'numeric', month: 'short', year: 'numeric' });
+  }
+
+  function badgeHtml(status) {
+    const cls = { paid: 'badge-paid', sent: 'badge-sent', draft: 'badge-draft', cancelled: 'badge-cancelled' }[status] || 'badge-draft';
+    return `<span class="badge ${cls}">${status.charAt(0).toUpperCase() + status.slice(1)}</span>`;
+  }
+
+  async function load() {
+    const params = new URLSearchParams(location.search);
+    const token = params.get('token');
+    if (!token) { showError('No access token', 'This link is missing required information.'); return; }
+
+    try {
+      const res = await fetch(`${SUPABASE_URL}/functions/v1/accountant-access?action=view&token=${token}`, {
+        headers: { 'apikey': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRpbnJvdG5ieGlzeHhxbHBlZm1kIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjI5MzE1MDgsImV4cCI6MjAzODUwNzUwOH0.9xivLI5tJMBnGxLCjpj5WwePUzLLm7DaAuAcv-VDXWY' }
+      });
+      const data = await res.json();
+
+      if (!res.ok) { showError('Access denied', data.error || 'This link may have expired.'); return; }
+
+      const { worker, invoices, expenses } = data;
+
+      document.getElementById('worker-name').textContent = worker.business_name || `${worker.first_name} ${worker.last_name}`;
+      const meta = [];
+      if (worker.abn) meta.push(`ABN ${worker.abn}`);
+      document.getElementById('worker-meta').textContent = meta.join(' · ') || 'Independent NDIS Support Worker';
+
+      // Summary cards
+      const totalInvoiced = invoices.reduce((s, i) => s + Number(i.total_amount || 0), 0);
+      const totalPaid = invoices.filter(i => i.status === 'paid').reduce((s, i) => s + Number(i.total_amount || 0), 0);
+      const totalExpenses = expenses.reduce((s, e) => s + Number(e.amount || 0), 0);
+      document.getElementById('summary-row').innerHTML = `
+        <div class="summary-card"><div class="summary-label">Total invoiced</div><div class="summary-value mono">${fmt(totalInvoiced)}</div></div>
+        <div class="summary-card"><div class="summary-label">Total paid</div><div class="summary-value mono">${fmt(totalPaid)}</div></div>
+        <div class="summary-card"><div class="summary-label">Total expenses</div><div class="summary-value mono">${fmt(totalExpenses)}</div></div>
+        <div class="summary-card"><div class="summary-label">Invoices</div><div class="summary-value">${invoices.length}</div></div>
+      `;
+
+      // Invoices table
+      document.getElementById('invoices-body').innerHTML = invoices.length ? invoices.map(inv => `
+        <tr>
+          <td style="font-weight:500;">${inv.invoice_number || '—'}</td>
+          <td>${inv.participant ? inv.participant.first_name + ' ' + inv.participant.last_name : '—'}</td>
+          <td>${fmtDate(inv.created_at)}</td>
+          <td>${badgeHtml(inv.status)}</td>
+          <td class="text-right mono">${fmt(inv.total_amount)}</td>
+        </tr>`).join('') : '<tr><td colspan="5" style="text-align:center;color:#9CA3AF;padding:32px;">No invoices</td></tr>';
+
+      // Expenses table
+      document.getElementById('expenses-body').innerHTML = expenses.length ? expenses.map(exp => `
+        <tr>
+          <td>${fmtDate(exp.date)}</td>
+          <td>${exp.description || '—'}</td>
+          <td>${exp.category || '—'}</td>
+          <td class="text-right mono">${fmt(exp.amount)}</td>
+        </tr>`).join('') : '<tr><td colspan="4" style="text-align:center;color:#9CA3AF;padding:32px;">No expenses</td></tr>';
+
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('main').style.display = 'block';
+
+    } catch (e) {
+      showError('Something went wrong', 'Please try again or ask your worker to resend the invite.');
+    }
+  }
+
+  function showError(title, sub) {
+    document.getElementById('loading').style.display = 'none';
+    document.getElementById('error-title').textContent = title;
+    document.getElementById('error-sub').textContent = sub;
+    document.getElementById('error').style.display = 'block';
+  }
+
+  load();
+</script>
+</body>
+</html>
