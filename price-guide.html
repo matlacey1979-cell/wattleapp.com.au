@@ -1,0 +1,382 @@
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Free NDIS Price Guide Lookup — MyWattle</title>
+<meta name="description" content="Search the NDIS Support Catalogue 2026-27 for support item numbers, categories, unit prices, remote/very remote loadings and claim rules — free, no sign-up required.">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --blue: #2563EB;
+    --blue-light: #EFF6FF;
+    --green: #16A34A;
+    --green-light: #F0FDF4;
+    --amber: #D97706;
+    --purple: #7C3AED;
+    --teal: #0D9488;
+    --bg: #F9FAFB;
+    --surface: #FFFFFF;
+    --text: #111827;
+    --text-mid: #6B7280;
+    --text-light: #9CA3AF;
+    --border: #E5E7EB;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* NAV */
+  nav {
+    position: sticky;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: #fff;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 40px;
+    height: 64px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .nav-logo-mark { width: 34px; height: 34px; background: var(--blue); border-radius: 9px; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 800; color: #fff; }
+  .nav-logo-text { font-size: 20px; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  .nav-right { display: flex; align-items: center; gap: 20px; }
+  .nav-home { font-size: 14px; color: var(--text-mid); text-decoration: none; font-weight: 500; }
+  .nav-home:hover { color: var(--blue); }
+  .nav-cta { background: var(--blue); color: #fff; font-weight: 600; font-size: 14px; padding: 10px 20px; border-radius: 9px; text-decoration: none; transition: opacity 0.15s; white-space: nowrap; }
+  .nav-cta:hover { opacity: 0.88; }
+
+  /* HERO */
+  .hero { background: var(--blue-light); border-bottom: 1px solid #DBEAFE; padding: 56px 40px 40px; text-align: center; }
+  .hero-eyebrow { display: inline-block; font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); background: #fff; border: 1px solid #BFDBFE; padding: 5px 14px; border-radius: 20px; margin-bottom: 20px; }
+  .hero h1 { font-size: clamp(28px, 4.5vw, 44px); font-weight: 800; color: var(--text); line-height: 1.15; letter-spacing: -1px; max-width: 680px; margin: 0 auto 14px; }
+  .hero h1 span { color: var(--blue); }
+  .hero-sub { font-size: 16px; color: var(--text-mid); max-width: 560px; margin: 0 auto; line-height: 1.6; }
+
+  /* TOOL */
+  .tool-wrap { max-width: 1000px; margin: -8px auto 0; padding: 0 40px 24px; }
+  .tool-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 8px 32px rgba(0,0,0,0.06); padding: 24px; margin-top: 24px; }
+
+  .search-row { display: flex; gap: 10px; margin-bottom: 16px; flex-wrap: wrap; }
+  .search-box { flex: 1; min-width: 220px; position: relative; }
+  .search-box input {
+    width: 100%; padding: 13px 16px 13px 42px; font-size: 15px; border: 1px solid var(--border);
+    border-radius: 10px; outline: none; transition: border-color 0.15s;
+  }
+  .search-box input:focus { border-color: var(--blue); }
+  .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); font-size: 15px; color: var(--text-light); }
+
+  .loading-select {
+    padding: 13px 16px; font-size: 14px; border: 1px solid var(--border); border-radius: 10px;
+    background: #fff; color: var(--text); font-weight: 500; cursor: pointer; outline: none;
+  }
+
+  .cat-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+  .cat-pill {
+    font: inherit; -webkit-appearance: none; appearance: none;
+    font-size: 13px; font-weight: 600; padding: 7px 14px; border-radius: 20px; border: 1px solid var(--border);
+    background: #fff; color: var(--text-mid); cursor: pointer; transition: all 0.15s; user-select: none;
+  }
+  .cat-pill:hover { border-color: var(--blue); color: var(--blue); }
+  .cat-pill.active { background: var(--blue); border-color: var(--blue); color: #fff; }
+
+  .result-count { font-size: 13px; color: var(--text-light); margin-bottom: 10px; }
+
+  .table-scroll { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+  table { width: 100%; border-collapse: collapse; min-width: 640px; }
+  thead th {
+    text-align: left; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px;
+    color: var(--text-mid); background: var(--bg); padding: 10px 14px; border-bottom: 1px solid var(--border);
+    position: sticky; top: 0;
+  }
+  tbody td { padding: 12px 14px; font-size: 14px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--blue-light); }
+  .code-cell { font-family: 'SF Mono', Consolas, monospace; font-size: 12px; color: var(--text-mid); white-space: nowrap; }
+  .name-cell { font-weight: 500; color: var(--text); }
+  .table-tag { display: block; font-size: 11px; color: var(--text-light); font-weight: 400; margin-top: 2px; }
+  .unit-cell { color: var(--text-mid); font-size: 13px; white-space: nowrap; }
+  .price-cell { font-weight: 700; color: var(--text); white-space: nowrap; }
+  .badge-row { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 5px; }
+  .badge { font-size: 10px; font-weight: 600; padding: 2px 7px; border-radius: 10px; white-space: nowrap; }
+  .badge-quote { background: #FEF3C7; color: #92400E; }
+  .badge-notional { background: #F5F3FF; color: #6D28D9; }
+  .badge-unspecified { background: #F3F4F6; color: #6B7280; }
+  .badge-flag { background: var(--blue-light); color: var(--blue); }
+
+  .empty-state { text-align: center; padding: 48px 20px; color: var(--text-mid); }
+  .empty-state-icon { font-size: 32px; margin-bottom: 10px; }
+
+  .source-note { text-align: center; font-size: 12px; color: var(--text-light); margin-top: 14px; }
+
+  /* CTA STRIP */
+  .cta-strip { background: #fff; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: 64px 40px; text-align: center; }
+  .cta-strip .eyebrow { font-size: 12px; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 12px; }
+  .cta-strip h2 { font-size: clamp(24px, 3.2vw, 34px); font-weight: 800; color: var(--text); letter-spacing: -0.6px; margin-bottom: 14px; max-width: 560px; margin-left: auto; margin-right: auto; }
+  .cta-strip p { color: var(--text-mid); font-size: 16px; margin-bottom: 28px; line-height: 1.6; max-width: 520px; margin-left: auto; margin-right: auto; }
+  .cta-features { display: flex; justify-content: center; gap: 28px; flex-wrap: wrap; margin-bottom: 32px; }
+  .cta-feature { display: flex; align-items: center; gap: 8px; font-size: 14px; color: var(--text-mid); font-weight: 500; }
+  .btn-primary { display: inline-flex; align-items: center; gap: 8px; background: var(--blue); color: #fff; font-weight: 600; font-size: 16px; padding: 14px 28px; border-radius: 10px; text-decoration: none; transition: transform 0.15s, opacity 0.15s; }
+  .btn-primary:hover { transform: translateY(-1px); opacity: 0.92; }
+  .btn-secondary { display: inline-flex; align-items: center; gap: 6px; color: var(--text-mid); font-size: 15px; font-weight: 500; text-decoration: none; padding: 14px 20px; border: 1px solid var(--border); border-radius: 10px; background: #fff; transition: border-color 0.15s, color 0.15s; }
+  .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
+  .cta-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* FOOTER */
+  footer { background: var(--text); padding: 36px 40px; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+  .footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+  .footer-logo-mark { width: 30px; height: 30px; background: var(--blue); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 800; color: #fff; }
+  .footer-logo-text { font-size: 17px; font-weight: 700; color: #fff; }
+  .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
+  .footer-links a { font-size: 13px; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.15s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.8); }
+  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
+
+  @media (max-width: 640px) {
+    nav { padding: 0 16px; height: 56px; }
+    .nav-logo-text { font-size: 17px; }
+    .nav-home { display: none; }
+    .nav-cta { font-size: 13px; padding: 8px 14px; }
+    .hero { padding: 40px 20px 28px; }
+    .tool-wrap { padding: 0 16px 20px; }
+    .tool-card { padding: 16px; }
+    .search-row { flex-direction: column; }
+    .cta-strip { padding: 48px 20px; }
+    .cta-features { gap: 16px; flex-direction: column; align-items: center; }
+    footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+</style>
+
+<!-- NAV -->
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-logo-mark">W</div>
+    <span class="nav-logo-text">MyWattle</span>
+  </a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-home">← Back to home</a>
+    <a href="index.html#pricing" class="nav-cta">Start free trial</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Free tool — no sign-up required</div>
+  <h1>NDIS <span>Price Guide</span> lookup</h1>
+  <p class="hero-sub">Search all 976 current NDIS support items — prices, support categories and claim rules (travel, cancellations, quotes) — straight from the 2026-27 Support Catalogue.</p>
+</section>
+
+<!-- TOOL -->
+<div class="tool-wrap">
+  <div class="tool-card">
+    <div class="search-row">
+      <div class="search-box">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="search-input" placeholder="Search by item name or support item number…" autocomplete="off">
+      </div>
+      <select id="loading-select" class="loading-select">
+        <option value="national">National price</option>
+        <option value="remote">Remote loading</option>
+        <option value="veryRemote">Very Remote loading</option>
+      </select>
+    </div>
+
+    <div class="cat-row" id="cat-row"></div>
+
+    <div class="result-count" id="result-count"></div>
+
+    <div class="table-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th>Support item</th>
+            <th>Unit</th>
+            <th id="price-col-header">National price</th>
+          </tr>
+        </thead>
+        <tbody id="results-body"></tbody>
+      </table>
+      <div class="empty-state" id="empty-state" style="display:none;">
+        <div class="empty-state-icon">🔎</div>
+        No support items match your search.
+      </div>
+    </div>
+
+    <p class="source-note" id="source-note"></p>
+  </div>
+</div>
+
+<!-- CTA STRIP -->
+<div class="cta-strip">
+  <div class="eyebrow">Stop looking prices up by hand</div>
+  <h2>MyWattle picks the right price line automatically</h2>
+  <p>Log a shift — including Saturday, Sunday, public holiday and night rates — and MyWattle matches it to the correct NDIS item number and price, then builds the invoice for you.</p>
+  <div class="cta-features">
+    <div class="cta-feature">✅ Always up to date pricing</div>
+    <div class="cta-feature">✅ Auto-generated invoices</div>
+    <div class="cta-feature">✅ Built for sole traders</div>
+  </div>
+  <div class="cta-actions">
+    <a href="https://apps.apple.com/app/mywattle/id6787370760" class="btn-primary" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download on App Store
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=au.com.wattle.app" class="btn-secondary" target="_blank" rel="noopener">
+      ▶ Get it on Google Play
+    </a>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="index.html" class="footer-logo">
+    <div class="footer-logo-mark">W</div>
+    <span class="footer-logo-text">MyWattle</span>
+  </a>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="mailto:matlacey1979@gmail.com">Contact</a>
+  </div>
+  <div class="footer-copy">© 2026 MyWattle. All rights reserved.</div>
+</footer>
+
+<script src="data/ndis-pricing-2026-27.js"></script>
+<script>
+  (function () {
+    var data = window.NDIS_PRICING_DATA || [];
+    var meta = window.NDIS_PRICING_META || {};
+
+    var categories = [];
+    data.forEach(function (item) {
+      if (categories.indexOf(item.category) === -1) categories.push(item.category);
+    });
+
+    var state = { query: '', category: 'All', loading: 'national' };
+
+    var catRow = document.getElementById('cat-row');
+    var allPill = makePill('All');
+    catRow.appendChild(allPill);
+    categories.forEach(function (c) { catRow.appendChild(makePill(c)); });
+
+    function makePill(label) {
+      var el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'cat-pill' + (label === 'All' ? ' active' : '');
+      el.textContent = label;
+      el.addEventListener('click', function () {
+        state.category = label;
+        Array.prototype.forEach.call(catRow.children, function (c) { c.classList.remove('active'); });
+        el.classList.add('active');
+        render();
+      });
+      return el;
+    }
+
+    var searchInput = document.getElementById('search-input');
+    searchInput.addEventListener('input', function () {
+      state.query = searchInput.value.trim().toLowerCase();
+      render();
+    });
+
+    var loadingSelect = document.getElementById('loading-select');
+    var priceColHeader = document.getElementById('price-col-header');
+    var loadingLabels = { national: 'National price', remote: 'Remote loading', veryRemote: 'Very Remote loading' };
+    loadingSelect.addEventListener('change', function () {
+      state.loading = loadingSelect.value;
+      priceColHeader.textContent = loadingLabels[state.loading];
+      render();
+    });
+
+    var resultsBody = document.getElementById('results-body');
+    var resultCount = document.getElementById('result-count');
+    var emptyState = document.getElementById('empty-state');
+
+    function fmtMoney(n) {
+      return '$' + n.toFixed(2);
+    }
+
+    var FLAG_LABELS = {
+      providerTravel: 'Travel claimable',
+      shortNoticeCancellation: 'Cancellation claimable',
+      nonFaceToFace: 'Non-F2F claimable',
+      ndiaReports: 'NDIA reports claimable',
+      irregularSIL: 'Irregular SIL',
+    };
+
+    function priceCell(item) {
+      if (item.priceType === 'quote') {
+        return '<span class="badge-row"><span class="badge badge-quote">Quote required</span></span>';
+      }
+      if (item.priceType === 'unspecified') {
+        return '<span class="badge-row"><span class="badge badge-unspecified">No fixed limit</span></span>';
+      }
+      var priceVal = item[state.loading];
+      if (typeof priceVal !== 'number') return '—';
+      var display = fmtMoney(priceVal);
+      if (item.priceType === 'notional') {
+        return display + '<span class="badge-row"><span class="badge badge-notional">Notional unit</span></span>';
+      }
+      return display;
+    }
+
+    function flagBadges(item) {
+      if (!item.flags) return '';
+      var badges = Object.keys(FLAG_LABELS)
+        .filter(function (k) { return item.flags[k] === true; })
+        .map(function (k) { return '<span class="badge badge-flag">' + FLAG_LABELS[k] + '</span>'; });
+      if (!badges.length) return '';
+      return '<span class="badge-row">' + badges.join('') + '</span>';
+    }
+
+    function render() {
+      var filtered = data.filter(function (item) {
+        if (state.category !== 'All' && item.category !== state.category) return false;
+        if (state.query) {
+          var haystack = (item.name + ' ' + item.code).toLowerCase();
+          if (haystack.indexOf(state.query) === -1) return false;
+        }
+        return true;
+      });
+
+      resultCount.textContent = filtered.length + (filtered.length === 1 ? ' support item' : ' support items') +
+        (state.category !== 'All' ? ' in ' + state.category : '');
+
+      var rows = filtered.slice(0, 400).map(function (item) {
+        return '<tr>' +
+          '<td><span class="name-cell">' + escapeHtml(item.name) + '</span>' +
+          '<span class="table-tag">' + escapeHtml(item.code) + (item.regGroup ? ' · ' + escapeHtml(item.regGroup) : '') + '</span>' +
+          flagBadges(item) + '</td>' +
+          '<td class="unit-cell">' + escapeHtml(item.unit) + '</td>' +
+          '<td class="price-cell">' + priceCell(item) + '</td>' +
+          '</tr>';
+      }).join('');
+
+      resultsBody.innerHTML = rows;
+      emptyState.style.display = filtered.length === 0 ? 'block' : 'none';
+
+      if (filtered.length > 400) {
+        resultCount.textContent += ' — showing first 400, refine your search for more';
+      }
+    }
+
+    function escapeHtml(s) {
+      return String(s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+
+    document.getElementById('source-note').textContent =
+      'Source: ' + (meta.source || 'NDIS Support Catalogue') + ', effective ' + (meta.effective || '') +
+      '. Prices shown are NDIA maximum price limits, not guaranteed provider rates.';
+
+    render();
+  })();
+</script>
