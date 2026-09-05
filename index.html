@@ -366,7 +366,7 @@
 
   .pricing-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 16px;
   }
 
@@ -573,8 +573,9 @@
     .tour-emoji { font-size: 44px; }
     .tour-body { font-size: 15px; }
 
-    /* Pricing — single column on mobile */
-    .pricing-grid { grid-template-columns: 1fr; }
+    /* Pricing — 2 columns on small screens */
+    .pricing-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (max-width: 420px) { .pricing-grid { grid-template-columns: 1fr; } }
     .pricing-card { padding: 24px 20px; }
     .price-amount { font-size: 44px; }
     .pricing-features li { font-size: 14px; }
