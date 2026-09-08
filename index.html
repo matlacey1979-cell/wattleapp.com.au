@@ -1,998 +1,634 @@
-﻿
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>MyWattle — Dedicated NDIS Sole Trader App</title>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MyWattle — NDIS Support Worker App</title>
+<meta name="description" content="Clock shifts, manage participants, generate NDIS invoices and stay compliant. Free to start. Built for support workers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --blue: #2563EB;
-    --blue-light: #EFF6FF;
-    --green: #16A34A;
-    --green-light: #F0FDF4;
-    --amber: #D97706;
-    --amber-light: #FFFBEB;
-    --red: #DC2626;
-    --red-light: #FEF2F2;
-    --purple: #7C3AED;
-    --purple-light: #F5F3FF;
-    --teal: #0D9488;
-    --teal-light: #F0FDFA;
-    --orange: #C2410C;
-    --orange-light: #FFF7ED;
-    --bg: #F9FAFB;
-    --surface: #FFFFFF;
-    --text: #111827;
-    --text-mid: #6B7280;
-    --text-light: #9CA3AF;
-    --border: #E5E7EB;
-  }
-
-  body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    line-height: 1.6;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  /* NAV */
-  nav {
-    position: fixed;
-    top: 0; left: 0; right: 0;
-    z-index: 100;
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 40px;
-    height: 64px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-  }
-
-  .nav-logo {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    text-decoration: none;
-  }
-
-  .nav-logo-mark {
-    width: 34px; height: 34px;
-    background: var(--blue);
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 18px;
-    font-weight: 800;
-    color: #fff;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  }
-
-  .nav-logo-text {
-    font-size: 20px;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: -0.3px;
-  }
-
-  .nav-cta {
-    background: var(--blue);
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 10px 22px;
-    border-radius: 9px;
-    text-decoration: none;
-    transition: opacity 0.15s;
-  }
-
-  .nav-cta:hover { opacity: 0.88; }
-
-  /* HERO */
-  .hero {
-    background: var(--blue-light);
-    border-bottom: 1px solid #DBEAFE;
-    padding: 120px 40px 80px;
-    text-align: center;
-  }
-
-  .hero-eyebrow {
-    display: inline-block;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--blue);
-    background: #fff;
-    border: 1px solid #BFDBFE;
-    padding: 5px 14px;
-    border-radius: 20px;
-    margin-bottom: 24px;
-  }
-
-  .hero h1 {
-    font-size: clamp(36px, 5.5vw, 64px);
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1.1;
-    letter-spacing: -1.5px;
-    max-width: 720px;
-    margin: 0 auto 20px;
-  }
-
-  .hero h1 span { color: var(--blue); }
-
-  .hero-sub {
-    font-size: clamp(16px, 2vw, 18px);
-    color: var(--text-mid);
-    max-width: 480px;
-    margin: 0 auto 36px;
-    line-height: 1.65;
-  }
-
-  .hero-actions {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin-bottom: 64px;
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    background: var(--blue);
-    color: #fff;
-    font-weight: 600;
-    font-size: 16px;
-    padding: 14px 28px;
-    border-radius: 10px;
-    text-decoration: none;
-    transition: transform 0.15s, opacity 0.15s;
-  }
-
-  .btn-primary:hover { transform: translateY(-1px); opacity: 0.92; }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    color: var(--text-mid);
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    padding: 14px 20px;
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    background: #fff;
-    transition: border-color 0.15s, color 0.15s;
-  }
-
-  .btn-secondary:hover { border-color: var(--blue); color: var(--blue); }
-
-  /* PHONE MOCKUP */
-  .phone-wrap { display: flex; justify-content: center; }
-
-  .phone {
-    width: 230px;
-    height: 460px;
-    background: #1c1c1e;
-    border-radius: 38px;
-    padding: 20px 14px 16px;
-    box-shadow: 0 32px 64px rgba(0,0,0,0.22), 0 0 0 1px rgba(255,255,255,0.06);
-    position: relative;
-  }
-
-  .phone-notch {
-    width: 70px; height: 20px;
-    background: #1c1c1e;
-    border-radius: 12px;
-    margin: 0 auto 10px;
-    position: relative;
-    z-index: 2;
-  }
-
-  .phone-screen {
-    background: #F9FAFB;
-    border-radius: 24px;
-    height: calc(100% - 30px);
-    overflow: hidden;
-    padding: 10px 8px 8px;
-  }
-
-  /* TRUST BAR */
-  .trust-bar {
-    background: #fff;
-    border-bottom: 1px solid var(--border);
-    padding: 18px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 40px;
-    flex-wrap: wrap;
-  }
-
-  .trust-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-mid);
-    font-size: 13px;
-    font-weight: 500;
-  }
-
-  .trust-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--green);
-    flex-shrink: 0;
-  }
-
-  /* SECTIONS */
-  .section {
-    padding: 88px 40px;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-
-  .section-eyebrow {
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--blue);
-    margin-bottom: 12px;
-  }
-
-  .section-title {
-    font-size: clamp(26px, 3.5vw, 40px);
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.8px;
-    line-height: 1.15;
-    max-width: 520px;
-    margin-bottom: 48px;
-  }
-
-  /* FEATURES GRID */
-  .features-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 16px;
-  }
-
-  .feature-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-left: 4px solid var(--blue);
-    border-radius: 12px;
-    padding: 24px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-
-  .feature-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(37,99,235,0.09);
-  }
-
-  .feature-card:nth-child(2) { border-left-color: var(--green); }
-  .feature-card:nth-child(3) { border-left-color: var(--purple); }
-  .feature-card:nth-child(4) { border-left-color: var(--teal); }
-  .feature-card:nth-child(5) { border-left-color: var(--amber); }
-  .feature-card:nth-child(6) { border-left-color: var(--red); }
-
-  .feature-icon {
-    font-size: 26px;
-    margin-bottom: 14px;
-    display: block;
-  }
-
-  .feature-title {
-    font-size: 16px;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 8px;
-  }
-
-  .feature-desc {
-    font-size: 14px;
-    color: var(--text-mid);
-    line-height: 1.65;
-  }
-
-  /* TOUR */
-  .tour-section {
-    background: #fff;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-    padding: 88px 40px;
-  }
-
-  .tour-section-inner { max-width: 860px; margin: 0 auto; }
-
-  .tour-slide {
-    min-width: 100%;
-    padding: 56px 48px;
-    text-align: center;
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    border: 1px solid var(--border);
-  }
-
-  .tour-emoji { font-size: 56px; margin-bottom: 20px; line-height: 1; }
-
-  .tour-title {
-    font-size: clamp(22px, 3vw, 30px);
-    font-weight: 800;
-    margin-bottom: 14px;
-    letter-spacing: -0.5px;
-    color: var(--blue);
-  }
-
-  .tour-body {
-    font-size: 16px;
-    color: var(--text-mid);
-    max-width: 460px;
-    line-height: 1.65;
-  }
-
-  /* PRICING */
-  .pricing-section {
-    background: var(--bg);
-    padding: 88px 40px;
-    border-top: 1px solid var(--border);
-  }
-
-  .pricing-inner { max-width: 1000px; margin: 0 auto; }
-
-  .pricing-header { text-align: center; margin-bottom: 48px; }
-
-  .pricing-title {
-    font-size: clamp(26px, 3.5vw, 40px);
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.8px;
-    margin-bottom: 12px;
-  }
-
-  .pricing-sub { color: var(--text-mid); font-size: 16px; }
-
-  .pricing-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-  }
-
-  .pricing-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-top: 4px solid var(--border);
-    border-radius: 14px;
-    padding: 32px 28px;
-    position: relative;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    transition: transform 0.15s, box-shadow 0.15s;
-  }
-
-  .pricing-card:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.09);
-  }
-
-  .pricing-card.featured {
-    border-top-color: var(--blue);
-    box-shadow: 0 4px 24px rgba(37,99,235,0.12);
-  }
-
-  .pricing-badge {
-    display: inline-block;
-    background: var(--blue-light);
-    color: var(--blue);
-    font-size: 11px;
-    font-weight: 700;
-    padding: 4px 12px;
-    border-radius: 20px;
-    letter-spacing: 0.3px;
-    margin-bottom: 16px;
-  }
-
-  .pricing-tier {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text-mid);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 6px;
-  }
-
-  .pricing-participants {
-    font-size: 14px;
-    color: var(--blue);
-    font-weight: 600;
-    margin-bottom: 20px;
-  }
-
-  .pricing-price {
-    display: flex;
-    align-items: baseline;
-    gap: 3px;
-    margin-bottom: 4px;
-  }
-
-  .price-dollar { font-size: 20px; color: var(--text-mid); font-weight: 600; margin-top: 6px; }
-  .price-amount { font-size: 52px; font-weight: 800; color: var(--text); letter-spacing: -2px; }
-  .price-period { font-size: 14px; color: var(--text-light); }
-
-  .pricing-trial { font-size: 13px; color: var(--text-light); margin-bottom: 24px; }
-
-  .pricing-divider { height: 1px; background: var(--border); margin-bottom: 20px; }
-
-  .pricing-features {
-    list-style: none;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 28px;
-  }
-
-  .pricing-features li {
-    display: flex;
-    align-items: flex-start;
-    gap: 10px;
-    font-size: 14px;
-    color: var(--text-mid);
-    line-height: 1.4;
-  }
-
-  .check { color: var(--green); font-size: 14px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-
-  .pricing-btn {
-    display: block;
-    text-align: center;
-    padding: 13px;
-    border-radius: 10px;
-    font-weight: 600;
-    font-size: 15px;
-    text-decoration: none;
-    background: var(--blue);
-    color: #fff;
-    border: 1px solid var(--blue);
-    transition: opacity 0.15s;
-  }
-
-  .pricing-btn:hover { opacity: 0.88; }
-
-  .pricing-card.featured .pricing-btn {
-    background: var(--blue);
-    color: #fff;
-    border-color: var(--blue);
-  }
-
-  .pricing-card.featured .pricing-btn:hover { opacity: 0.9; }
-
-  /* CTA STRIP */
-  .cta-strip {
-    background: var(--blue-light);
-    border-top: 1px solid #DBEAFE;
-    padding: 88px 40px;
-    text-align: center;
-  }
-
-  .cta-strip h2 {
-    font-size: clamp(26px, 3.5vw, 38px);
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.8px;
-    margin-bottom: 14px;
-  }
-
-  .cta-strip p {
-    color: var(--text-mid);
-    font-size: 17px;
-    margin-bottom: 32px;
-    line-height: 1.6;
-    max-width: 480px;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  /* FOOTER */
-  footer {
-    background: var(--text);
-    padding: 36px 40px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 20px;
-  }
-
-  .footer-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
-
-  .footer-logo-mark {
-    width: 30px; height: 30px;
-    background: var(--blue);
-    border-radius: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 16px;
-    font-weight: 800;
-    color: #fff;
-  }
-
-  .footer-logo-text { font-size: 17px; font-weight: 700; color: #fff; }
-
-  .footer-links { display: flex; gap: 24px; flex-wrap: wrap; }
-
-  .footer-links a {
-    font-size: 13px;
-    color: rgba(255,255,255,0.45);
-    text-decoration: none;
-    transition: color 0.15s;
-  }
-
-  .footer-links a:hover { color: rgba(255,255,255,0.8); }
-
-  .footer-copy { font-size: 12px; color: rgba(255,255,255,0.25); }
-
-  @media (max-width: 640px) {
-    /* Layout & spacing */
-    nav { padding: 0 16px; height: 56px; }
-    .nav-logo-text { font-size: 17px; }
-    .nav-cta { font-size: 13px; padding: 8px 16px; }
-    .hero { padding: 84px 20px 56px; }
-    .trust-bar { gap: 16px; padding: 14px 20px; flex-direction: column; align-items: flex-start; }
-    .section { padding: 56px 20px; }
-    .tour-section { padding: 56px 20px; }
-    .pricing-section { padding: 56px 20px; }
-    .cta-strip { padding: 56px 20px; }
-    footer { padding: 28px 20px; flex-direction: column; align-items: flex-start; gap: 16px; }
-
-    /* Hero text */
-    .hero-eyebrow { font-size: 11px; }
-    .hero-sub { font-size: 16px; }
-    .btn-primary { font-size: 15px; padding: 13px 22px; }
-    .btn-secondary { font-size: 14px; padding: 12px 18px; }
-
-    /* Features grid — single column on mobile */
-    .features-grid { grid-template-columns: 1fr; }
-    .feature-card { padding: 20px; }
-    .feature-title { font-size: 15px; }
-    .feature-desc { font-size: 14px; }
-
-    /* Tour */
-    .tour-slide { padding: 36px 20px; }
-    .tour-emoji { font-size: 44px; }
-    .tour-body { font-size: 15px; }
-
-    /* Pricing — 2 columns on small screens */
-    .pricing-grid { grid-template-columns: repeat(2, 1fr); }
-    @media (max-width: 420px) { .pricing-grid { grid-template-columns: 1fr; } }
-    .pricing-card { padding: 24px 20px; }
-    .price-amount { font-size: 44px; }
-    .pricing-features li { font-size: 14px; }
-    .pricing-btn { font-size: 15px; }
-
-    /* Section titles */
-    .section-title { margin-bottom: 32px; }
-    .section-eyebrow { font-size: 11px; }
-
-    /* CTA strip */
-    .cta-strip p { font-size: 15px; }
-    .hero-actions { gap: 10px; }
-
-    /* Footer */
-    .footer-links { gap: 16px; }
-    .footer-copy { font-size: 11px; }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after { transition: none !important; }
-  }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --forest:      #1A3D2B;
+  --forest-mid:  #2D6A4F;
+  --forest-lite: #4A8A68;
+  --gold:        #C99618;
+  --gold-pale:   #FFF8E1;
+  --gold-bg:     rgba(201,150,24,0.12);
+  --sage:        #EAF1EB;
+  --cream:       #F8FAF8;
+  --surface:     #FFFFFF;
+  --ink:         #101C14;
+  --mid:         #4D6356;
+  --muted:       #8EA394;
+  --border:      #D2E2D7;
+  --ok:          #2D8A5A;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 60px;
+  background: rgba(26,61,43,0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+.nav-mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px; font-weight: 800; color: var(--forest);
+}
+.nav-name { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.2px; }
+.nav-cta {
+  background: var(--gold); color: var(--forest);
+  font-size: 13px; font-weight: 700;
+  padding: 8px 20px; border-radius: 8px;
+  text-decoration: none;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--forest);
+  padding: 120px 40px 96px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -160px; left: 50%; transform: translateX(-50%);
+  width: 900px; height: 600px;
+  background: radial-gradient(ellipse at center, rgba(201,150,24,0.14) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { position: relative; max-width: 720px; margin: 0 auto; }
+
+.hero-badge {
+  display: inline-flex; align-items: center; gap: 7px;
+  border: 1px solid rgba(201,150,24,0.4);
+  background: rgba(201,150,24,0.1);
+  color: var(--gold);
+  font-size: 11px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 6px 16px; border-radius: 20px;
+  margin-bottom: 28px;
+}
+.hero-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); }
+
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(38px, 6vw, 68px);
+  font-weight: 800; color: #fff;
+  line-height: 1.08; letter-spacing: -2px;
+  margin-bottom: 20px; text-wrap: balance;
+}
+.hero h1 em { font-style: normal; color: var(--gold); }
+
+.hero-sub {
+  font-size: clamp(15px, 2vw, 17px);
+  color: rgba(255,255,255,0.58);
+  max-width: 420px; margin: 0 auto 40px;
+  line-height: 1.7;
+}
+
+.dl-row {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.dl-btn {
+  display: inline-flex; align-items: center; gap: 11px;
+  padding: 13px 24px; border-radius: 12px;
+  text-decoration: none;
+  transition: transform 0.15s, opacity 0.15s;
+}
+.dl-btn:hover { transform: translateY(-1px); opacity: 0.9; }
+
+.dl-ios { background: #fff; color: var(--ink); }
+.dl-android {
+  background: rgba(255,255,255,0.09);
+  border: 1px solid rgba(255,255,255,0.2);
+  color: #fff;
+}
+
+.dl-icon { flex-shrink: 0; }
+.dl-label { text-align: left; }
+.dl-label-sub { display: block; font-size: 10px; font-weight: 400; opacity: 0.55; line-height: 1; margin-bottom: 2px; }
+.dl-label-main { display: block; font-size: 14px; font-weight: 700; line-height: 1; }
+
+.hero-note {
+  font-size: 12px; color: rgba(255,255,255,0.3);
+}
+
+/* ── TRUST STRIP ── */
+.trust {
+  background: #fff;
+  border-bottom: 1px solid var(--border);
+  padding: 16px 40px;
+  display: flex; align-items: center; justify-content: center;
+  gap: 40px; flex-wrap: wrap;
+}
+.trust-item {
+  display: flex; align-items: center; gap: 7px;
+  font-size: 13px; font-weight: 500; color: var(--mid);
+}
+.trust-icon { font-size: 14px; }
+
+/* ── FREE CALLOUT ── */
+.free-band {
+  background: linear-gradient(130deg, #1A3D2B 0%, #2D6A4F 100%);
+  padding: 72px 40px;
+  text-align: center;
+}
+.free-band-inner { max-width: 580px; margin: 0 auto; }
+.free-chip {
+  display: inline-block;
+  background: var(--gold); color: var(--forest);
+  font-size: 10px; font-weight: 800; letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 14px; border-radius: 20px;
+  margin-bottom: 20px;
+}
+.free-band h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(28px, 4vw, 42px);
+  font-weight: 800; color: #fff;
+  letter-spacing: -1px; line-height: 1.1;
+  margin-bottom: 14px; text-wrap: balance;
+}
+.free-band p {
+  font-size: 16px; color: rgba(255,255,255,0.6);
+  line-height: 1.65; margin-bottom: 28px;
+}
+.free-band-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: #fff; color: var(--forest);
+  font-size: 14px; font-weight: 700;
+  padding: 13px 28px; border-radius: 10px;
+  text-decoration: none;
+}
+
+/* ── FEATURES ── */
+.features {
+  background: var(--cream);
+  padding: 96px 40px;
+}
+.features-inner { max-width: 1040px; margin: 0 auto; }
+
+.section-eyebrow {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--forest-mid);
+  margin-bottom: 12px;
+}
+.section-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(26px, 3.5vw, 38px);
+  font-weight: 800; color: var(--ink);
+  letter-spacing: -0.8px; line-height: 1.12;
+  max-width: 480px; margin-bottom: 56px;
+  text-wrap: balance;
+}
+
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  background: var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.feat-item {
+  background: var(--surface);
+  padding: 40px 32px;
+}
+.feat-mark {
+  width: 44px; height: 44px; border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; margin-bottom: 20px;
+}
+.feat-mark-green { background: #E4F2EC; }
+.feat-mark-gold  { background: var(--gold-pale); }
+.feat-mark-sage  { background: var(--sage); }
+.feat-title {
+  font-size: 17px; font-weight: 700; color: var(--ink);
+  margin-bottom: 10px;
+}
+.feat-body {
+  font-size: 14px; color: var(--mid); line-height: 1.65;
+}
+.feat-free {
+  display: inline-block; margin-top: 12px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  background: #E4F2EC; color: var(--ok);
+  padding: 3px 10px; border-radius: 10px;
+}
+
+/* ── PRICING ── */
+.pricing {
+  background: var(--sage);
+  padding: 96px 40px;
+  border-top: 1px solid var(--border);
+}
+.pricing-inner { max-width: 1040px; margin: 0 auto; }
+.pricing-hd { text-align: center; margin-bottom: 48px; }
+.pricing-title {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 800; color: var(--ink);
+  letter-spacing: -0.8px; margin-bottom: 10px;
+}
+.pricing-sub { font-size: 15px; color: var(--mid); }
+
+.p-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  align-items: start;
+}
+.p-card {
+  background: var(--surface);
+  border-radius: 14px; padding: 28px 22px;
+  border: 1.5px solid var(--border);
+}
+.p-card.free-card { border-color: var(--forest); }
+
+.p-label {
+  font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 6px;
+}
+.p-participants {
+  font-size: 12px; font-weight: 600; color: var(--forest-mid);
+  margin-bottom: 16px;
+}
+.p-price {
+  display: flex; align-items: baseline; gap: 1px;
+  margin-bottom: 4px;
+}
+.p-dollar { font-size: 15px; font-weight: 600; color: var(--mid); margin-top: 10px; }
+.p-amount {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 48px; font-weight: 800; color: var(--ink);
+  letter-spacing: -2px; line-height: 1;
+}
+.p-period { font-size: 13px; color: var(--muted); margin-left: 2px; }
+.p-note { font-size: 11px; color: var(--muted); margin-bottom: 18px; }
+
+.p-divider { height: 1px; background: var(--border); margin-bottom: 16px; }
+
+.p-list {
+  list-style: none;
+  display: flex; flex-direction: column; gap: 9px;
+  margin-bottom: 22px;
+}
+.p-list li {
+  display: flex; align-items: flex-start; gap: 8px;
+  font-size: 13px; color: var(--mid); line-height: 1.4;
+}
+.p-check { color: var(--ok); font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+
+.p-btn {
+  display: block; text-align: center;
+  padding: 11px; border-radius: 9px;
+  font-size: 13px; font-weight: 700;
+  text-decoration: none;
+}
+.p-btn-free { background: var(--forest); color: #fff; }
+.p-btn-paid { background: var(--sage); color: var(--forest); border: 1px solid var(--border); }
+
+/* ── TESTIMONIALS ── */
+.testimonials {
+  background: #fff;
+  padding: 96px 40px;
+  border-top: 1px solid var(--border);
+}
+.testi-inner {
+  max-width: 900px; margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.testi {
+  background: var(--cream);
+  border: 1px solid var(--border);
+  border-radius: 14px; padding: 32px;
+}
+.testi-stars { color: var(--gold); font-size: 14px; margin-bottom: 14px; }
+.testi-quote {
+  font-size: 16px; line-height: 1.65; color: var(--ink);
+  margin-bottom: 20px;
+}
+.testi-author { font-size: 13px; color: var(--mid); }
+.testi-name { font-weight: 700; color: var(--ink); }
+
+/* ── CTA STRIP ── */
+.cta-strip {
+  background: var(--forest);
+  padding: 96px 40px;
+  text-align: center;
+}
+.cta-strip h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(28px, 4.5vw, 52px);
+  font-weight: 800; color: #fff;
+  letter-spacing: -1.5px; margin-bottom: 14px;
+  text-wrap: balance;
+}
+.cta-strip p {
+  font-size: 16px; color: rgba(255,255,255,0.5);
+  margin-bottom: 36px; line-height: 1.65;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: #0D2518;
+  padding: 30px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+.footer-mark {
+  width: 28px; height: 28px; border-radius: 7px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 14px; font-weight: 800; color: var(--forest);
+}
+.footer-name { font-size: 16px; font-weight: 700; color: rgba(255,255,255,0.75); }
+.footer-links { display: flex; gap: 20px; }
+.footer-links a { font-size: 12px; color: rgba(255,255,255,0.28); text-decoration: none; transition: color 0.15s; }
+.footer-links a:hover { color: rgba(255,255,255,0.6); }
+.footer-copy { font-size: 11px; color: rgba(255,255,255,0.18); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .feat-grid { grid-template-columns: 1fr; }
+  .p-grid { grid-template-columns: 1fr 1fr; }
+  .testi-inner { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 96px 20px 72px; }
+  .trust { gap: 20px; padding: 14px 20px; }
+  .free-band, .features, .pricing, .testimonials, .cta-strip { padding: 64px 20px; }
+  .p-grid { grid-template-columns: 1fr; }
+  footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}
 </style>
+</head>
+<body>
 
 <!-- NAV -->
 <nav>
   <a href="#" class="nav-logo">
-    <div class="nav-logo-mark">W</div>
-    <span class="nav-logo-text">MyWattle</span>
+    <div class="nav-mark">W</div>
+    <span class="nav-name">MyWattle</span>
   </a>
-  <div style="display:flex;align-items:center;gap:20px;">
-    <a href="https://makesenseofndis.com/" style="font-size:14px;color:var(--text-mid);text-decoration:none;font-weight:500;">Free NDIS Price Guide</a>
-    <a href="#pricing" class="nav-cta">Start free trial</a>
-  </div>
+  <a href="#pricing" class="nav-cta">Get started free</a>
 </nav>
 
 <!-- HERO -->
 <section class="hero">
-  <div class="hero-eyebrow">iOS &amp; Android — Available now</div>
-  <h1>The <span>dedicated</span> app for NDIS sole traders</h1>
-  <p class="hero-sub">Clock shifts, manage participants, generate invoices and stay compliant — built for support workers, not accountants.</p>
-  <div class="hero-actions">
-    <a href="https://apps.apple.com/app/mywattle/id6787370760" class="btn-primary" target="_blank" rel="noopener">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-      Download on App Store
-    </a>
-    <a href="https://play.google.com/store/apps/details?id=au.com.wattle.app" class="btn-secondary" target="_blank" rel="noopener">
-      ▶ Get it on Google Play
-    </a>
-  </div>
-
-  <div class="phone-wrap">
-    <div class="phone">
-      <div class="phone-notch"></div>
-      <div class="phone-screen">
-
-        <!-- status bar -->
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;padding:0 2px;">
-          <span style="font-size:7px;font-weight:700;color:#111;">9:41</span>
-          <span style="font-size:7px;color:#111;">▲▲ ◀ 86%</span>
-        </div>
-
-        <!-- greeting -->
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:8px;">
-          <div>
-            <div style="font-size:7px;color:#6B7280;">Good morning,</div>
-            <div style="font-size:12px;font-weight:800;color:#111;">Mat 👋</div>
-          </div>
-          <div style="width:22px;height:22px;border-radius:11px;background:#EFF6FF;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;color:#2563EB;">M</div>
-        </div>
-
-        <!-- clock on -->
-        <div style="background:#16A34A;border-radius:10px;padding:8px;text-align:center;margin-bottom:8px;">
-          <span style="font-size:10px;font-weight:700;color:#fff;">▶ Clock on</span>
-        </div>
-
-        <!-- stat cards -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:8px;">
-          <div style="background:#fff;border-radius:8px;padding:7px;border-left:3px solid #2563EB;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-            <div style="font-size:16px;font-weight:800;color:#2563EB;">6</div>
-            <div style="font-size:6px;color:#6B7280;font-weight:500;margin-top:1px;">Shifts this week</div>
-          </div>
-          <div style="background:#fff;border-radius:8px;padding:7px;border-left:3px solid #16A34A;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-            <div style="font-size:16px;font-weight:800;color:#16A34A;">31.4</div>
-            <div style="font-size:6px;color:#6B7280;font-weight:500;margin-top:1px;">Hours this week</div>
-          </div>
-          <div style="background:#fff;border-radius:8px;padding:7px;border-left:3px solid #D97706;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-            <div style="font-size:16px;font-weight:800;color:#D97706;">3</div>
-            <div style="font-size:6px;color:#6B7280;font-weight:500;margin-top:1px;">Participants</div>
-          </div>
-          <div style="background:#fff;border-radius:8px;padding:7px;border-left:3px solid #DC2626;box-shadow:0 1px 3px rgba(0,0,0,0.06);">
-            <div style="font-size:16px;font-weight:800;color:#DC2626;">2</div>
-            <div style="font-size:6px;color:#6B7280;font-weight:500;margin-top:1px;">Draft invoices</div>
-          </div>
-        </div>
-
-        <!-- quick actions -->
-        <div style="font-size:7px;font-weight:700;color:#111;margin-bottom:5px;">Quick actions</div>
-        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;">
-          <div style="background:#EFF6FF;border-radius:7px;padding:6px 3px;text-align:center;">
-            <div style="font-size:12px;margin-bottom:2px;">📋</div>
-            <div style="font-size:5.5px;font-weight:700;color:#2563EB;">Log shift</div>
-          </div>
-          <div style="background:#F0FDF4;border-radius:7px;padding:6px 3px;text-align:center;">
-            <div style="font-size:12px;margin-bottom:2px;">👤</div>
-            <div style="font-size:5.5px;font-weight:700;color:#16A34A;">Add participant</div>
-          </div>
-          <div style="background:#F5F3FF;border-radius:7px;padding:6px 3px;text-align:center;">
-            <div style="font-size:12px;margin-bottom:2px;">💰</div>
-            <div style="font-size:5.5px;font-weight:700;color:#7C3AED;">New invoice</div>
-          </div>
-          <div style="background:#F0FDFA;border-radius:7px;padding:6px 3px;text-align:center;">
-            <div style="font-size:12px;margin-bottom:2px;">✅</div>
-            <div style="font-size:5.5px;font-weight:700;color:#0D9488;">Compliance</div>
-          </div>
-          <div style="background:#FFF7ED;border-radius:7px;padding:6px 3px;text-align:center;">
-            <div style="font-size:12px;margin-bottom:2px;">📤</div>
-            <div style="font-size:5.5px;font-weight:700;color:#C2410C;">Audit pack</div>
-          </div>
-          <div style="background:#FFFBEB;border-radius:7px;padding:6px 3px;text-align:center;">
-            <div style="font-size:12px;margin-bottom:2px;">🧾</div>
-            <div style="font-size:5.5px;font-weight:700;color:#D97706;">Expenses</div>
-          </div>
-        </div>
-
-        <!-- bottom bar -->
-        <div style="display:flex;align-items:center;justify-content:space-around;margin-top:8px;padding-top:6px;border-top:1px solid #E5E7EB;">
-          <div style="text-align:center;">
-            <div style="font-size:10px;">❓</div>
-            <div style="font-size:5px;color:#9CA3AF;">Help</div>
-          </div>
-          <div style="background:#2563EB;border-radius:16px;padding:5px 16px;text-align:center;">
-            <div style="font-size:10px;">🏠</div>
-            <div style="font-size:5px;color:#fff;font-weight:700;">Home</div>
-          </div>
-          <div style="text-align:center;">
-            <div style="font-size:10px;">🔒</div>
-            <div style="font-size:5px;color:#9CA3AF;">Privacy</div>
-          </div>
-        </div>
-
-      </div>
+  <div class="hero-inner">
+    <div class="hero-badge">
+      <div class="hero-badge-dot"></div>
+      Free plan — shift logging &amp; notes
     </div>
+    <h1>The app NDIS sole traders <em>actually</em> use</h1>
+    <p class="hero-sub">Log shifts, manage participants, and send compliant invoices — built for support workers, not accountants.</p>
+    <div class="dl-row">
+      <a href="#" class="dl-btn dl-ios">
+        <!-- Apple icon -->
+        <svg class="dl-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+        </svg>
+        <div class="dl-label">
+          <span class="dl-label-sub">Download on the</span>
+          <span class="dl-label-main">App Store</span>
+        </div>
+      </a>
+      <a href="#" class="dl-btn dl-android">
+        <!-- Play icon -->
+        <svg class="dl-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M3.18 23.76a2 2 0 01-.93-1.71V1.95a2 2 0 01.93-1.71l.11-.06 12.09 12.09v.28L3.29 23.82l-.11-.06zM16.29 14.97L12.9 11.59l-9.72 5.61 13.11-2.23zM20.14 13.27l-3.58 2.07-3.49-3.49 3.49-3.49 3.58 2.06a2.02 2.02 0 010 2.86zM3.18.29L16.29 9.03l-3.39 3.39L3.07.46l.11-.17z"/>
+        </svg>
+        <div class="dl-label">
+          <span class="dl-label-sub">Get it on</span>
+          <span class="dl-label-main">Google Play</span>
+        </div>
+      </a>
+    </div>
+    <p class="hero-note">Free forever for shift logging &amp; notes · Upgrade to invoice anytime</p>
   </div>
 </section>
 
-<!-- TRUST BAR -->
-<div class="trust-bar">
-  <div class="trust-item"><div class="trust-dot"></div>Up to date NDIS pricing</div>
-  <div class="trust-item"><div class="trust-dot"></div>Face ID protected</div>
-  <div class="trust-item"><div class="trust-dot"></div>Audit-ready reports</div>
-
+<!-- TRUST -->
+<div class="trust">
+  <div class="trust-item"><span class="trust-icon">⭐</span> 4.8 on App Store</div>
+  <div class="trust-item"><span class="trust-icon">🤝</span> Built by a support worker</div>
+  <div class="trust-item"><span class="trust-icon">📋</span> Current NDIS pricing built in</div>
+  <div class="trust-item"><span class="trust-icon">🔒</span> Face ID &amp; biometric lock</div>
 </div>
 
+<!-- FREE CALLOUT -->
+<section class="free-band">
+  <div class="free-band-inner">
+    <div class="free-chip">New — Free plan</div>
+    <h2>Start for free. No time limit.</h2>
+    <p>Log shifts and add notes completely free, forever. When you're ready to invoice, compliance track, or manage multiple participants — upgrade in one tap.</p>
+    <a href="#" class="free-band-btn">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Download free on App Store
+    </a>
+  </div>
+</section>
+
 <!-- FEATURES -->
-<section class="section" id="features">
-  <div class="section-eyebrow">Built for the work you do</div>
-  <h2 class="section-title">Everything a sole trader needs, nothing they don't</h2>
-  <div class="features-grid">
-    <div class="feature-card">
-      <span class="feature-icon">🕐</span>
-      <div class="feature-title">Clock on & off shifts</div>
-      <div class="feature-desc">Start and end shifts with a tap. Elapsed time tracks in real time. Overnight and sleepover shifts handled automatically.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">👥</span>
-      <div class="feature-title">Participant management</div>
-      <div class="feature-desc">Store participant details, NDIS numbers, emergency contacts and support goals in one secure place.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">🧾</span>
-      <div class="feature-title">Invoice generation</div>
-      <div class="feature-desc">Generate NDIS-compliant invoices with correct support item codes and up to date NDIS pricing. Email them directly from the app.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">📋</span>
-      <div class="feature-title">Incident & risk register</div>
-      <div class="feature-desc">Log incidents, complaints and risks as they happen. Exportable reports keep you audit-ready at any time.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">✅</span>
-      <div class="feature-title">Compliance & certifications</div>
-      <div class="feature-desc">Track NDIS Worker Screening, First Aid, Police Checks, Driver's Licence and more. Get alerted before they expire.</div>
-    </div>
-    <div class="feature-card">
-      <span class="feature-icon">📊</span>
-      <div class="feature-title">Revenue & expenses</div>
-      <div class="feature-desc">See your earnings at a glance, track business expenses and keep receipts — all in one place for tax time.</div>
-    </div>
-  </div>
-</section>
-
-<!-- TOUR -->
-<section class="tour-section">
-  <div class="tour-section-inner">
-    <div style="text-align:center;margin-bottom:48px;">
-      <div class="section-eyebrow" style="text-align:center;">App tour</div>
-      <h2 style="font-size:clamp(26px,3.5vw,40px);font-weight:800;color:var(--text);letter-spacing:-0.8px;">See how it works</h2>
-    </div>
-
-    <div style="position:relative;">
-      <div id="tour-track" style="overflow:hidden;border-radius:16px;">
-        <div id="tour-inner" style="display:flex;transition:transform 0.4s cubic-bezier(.4,0,.2,1);">
-
-          <div class="tour-slide" style="background:var(--blue-light);border-color:#DBEAFE;">
-            <div class="tour-emoji">🌿</div>
-            <h3 class="tour-title" style="color:var(--blue);">Welcome to MyWattle</h3>
-            <p class="tour-body">The support worker app built for the NDIS. Everything you need, in one place.</p>
-          </div>
-
-          <div class="tour-slide" style="background:var(--green-light);border-color:#BBF7D0;">
-            <div class="tour-emoji">⏱️</div>
-            <h3 class="tour-title" style="color:var(--green);">Track Your Shifts</h3>
-            <p class="tour-body">Clock on and off with a tap. Log visit notes and mileage as you go.</p>
-          </div>
-
-          <div class="tour-slide" style="background:var(--amber-light);border-color:#FDE68A;">
-            <div class="tour-emoji">👤</div>
-            <h3 class="tour-title" style="color:var(--amber);">Manage Participants</h3>
-            <p class="tour-body">Store profiles, NDIS goals, emergency contacts, and health details — all securely encrypted.</p>
-          </div>
-
-          <div class="tour-slide" style="background:var(--purple-light);border-color:#DDD6FE;">
-            <div class="tour-emoji">🧾</div>
-            <h3 class="tour-title" style="color:var(--purple);">Invoice in Seconds</h3>
-            <p class="tour-body">Create NDIS-compliant invoices for any support category, including STA and remote loadings. Email them as PDFs straight from the app.</p>
-          </div>
-
-          <div class="tour-slide" style="background:var(--teal-light);border-color:#99F6E4;">
-            <div class="tour-emoji">📋</div>
-            <h3 class="tour-title" style="color:var(--teal);">Stay Compliant</h3>
-            <p class="tour-body">Track your certifications, renewals, and policy documents. Never let a credential lapse again.</p>
-          </div>
-
-          <div class="tour-slide" style="background:var(--blue-light);border-color:#DBEAFE;">
-            <div class="tour-emoji">🚀</div>
-            <h3 class="tour-title" style="color:var(--blue);">You're Ready</h3>
-            <p class="tour-body">Create your free account to get started. Your data is private, encrypted, and stays yours.</p>
-            <a href="https://apps.apple.com/app/mywattle/id6787370760" class="btn-primary" style="margin-top:24px;" target="_blank" rel="noopener">Download on App Store</a>
-          </div>
-
-        </div>
+<section class="features">
+  <div class="features-inner">
+    <div class="section-eyebrow">What it does</div>
+    <h2 class="section-title">Everything you need to run your NDIS business</h2>
+    <div class="feat-grid">
+      <div class="feat-item">
+        <div class="feat-mark feat-mark-green">⏱</div>
+        <div class="feat-title">Shift logging</div>
+        <p class="feat-body">Clock on and off with a tap. Overnight, sleepover, and active nights handled automatically. Notes attached to every shift.</p>
+        <span class="feat-free">Free plan</span>
       </div>
-
-      <button onclick="tourNav(-1)" id="tour-prev" style="position:absolute;left:-20px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:22px;border:1px solid var(--border);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;color:var(--text-mid);opacity:0.4;">‹</button>
-      <button onclick="tourNav(1)" id="tour-next" style="position:absolute;right:-20px;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:22px;border:1px solid var(--border);background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;color:var(--text-mid);">›</button>
+      <div class="feat-item">
+        <div class="feat-mark feat-mark-gold">🧾</div>
+        <div class="feat-title">NDIS invoices</div>
+        <p class="feat-body">Generate compliant invoices with correct support item codes, up-to-date NDIS pricing, and Saturday/public holiday rates. Email PDFs directly from the app.</p>
+      </div>
+      <div class="feat-item">
+        <div class="feat-mark feat-mark-sage">✅</div>
+        <div class="feat-title">Compliance &amp; certifications</div>
+        <p class="feat-body">Track NDIS Worker Screening, First Aid, Police Check, and Driver's Licence. Alerts before anything expires. Incident and risk register built in.</p>
+      </div>
     </div>
-
-    <div id="tour-dots" style="display:flex;justify-content:center;gap:8px;margin-top:24px;"></div>
   </div>
 </section>
-
-<script>
-  (function(){
-    var current = 0, total = 6;
-    var inner = document.getElementById('tour-inner');
-    var dotsEl = document.getElementById('tour-dots');
-    var prev = document.getElementById('tour-prev');
-    var next = document.getElementById('tour-next');
-    for(var i=0;i<total;i++){
-      var d=document.createElement('div');
-      d.style.cssText='width:8px;height:8px;border-radius:4px;background:#E5E7EB;transition:all 0.25s;cursor:pointer;';
-      d.setAttribute('data-i',i);
-      d.onclick=function(){goTo(+this.getAttribute('data-i'));};
-      dotsEl.appendChild(d);
-    }
-    function goTo(n){
-      current=Math.max(0,Math.min(total-1,n));
-      inner.style.transform='translateX(-'+current*100+'%)';
-      var dots=dotsEl.children;
-      for(var i=0;i<dots.length;i++){
-        dots[i].style.background=i===current?'#2563EB':'#E5E7EB';
-        dots[i].style.width=i===current?'24px':'8px';
-      }
-      prev.style.opacity=current===0?'0.3':'1';
-      next.style.opacity=current===total-1?'0.3':'1';
-    }
-    window.tourNav=function(dir){goTo(current+dir);};
-    goTo(0);
-  })();
-</script>
 
 <!-- PRICING -->
-<section class="pricing-section" id="pricing">
+<section class="pricing" id="pricing">
   <div class="pricing-inner">
-    <div class="pricing-header">
+    <div class="pricing-hd">
       <div class="section-eyebrow" style="text-align:center;">Simple pricing</div>
-      <h2 class="pricing-title">Start free, grow at your own pace</h2>
-      <p class="pricing-sub">Shift logging and notes are free forever — no credit card required. Upgrade when you're ready for invoicing and the full feature set.</p>
+      <h2 class="pricing-title">Grows with your caseload</h2>
+      <p class="pricing-sub">Start free. Upgrade when you're ready. Cancel any time.</p>
     </div>
-    <div class="pricing-grid">
+    <div class="p-grid">
 
-      <div class="pricing-card">
-        <div class="pricing-badge" style="background:#D1FAE5;color:#065F46;">Free forever</div>
-        <div class="pricing-tier">Free</div>
-        <div class="pricing-participants">Unlimited participants</div>
-        <div style="font-size:13px;color:var(--text-mid);margin-top:-6px;">For shift logging &amp; notes only</div>
-        <div class="pricing-price">
-          <span class="price-dollar"></span>
-          <span class="price-amount" style="font-size:36px;">$0</span>
-          <span class="price-period">/mo</span>
+      <!-- FREE -->
+      <div class="p-card free-card">
+        <div class="p-label">Free</div>
+        <div class="p-participants">Shift notes only</div>
+        <div class="p-price">
+          <span class="p-amount">$0</span>
         </div>
-        <div class="pricing-trial">No credit card needed</div>
-        <div class="pricing-divider"></div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> Shift logging & clock on/off</li>
-          <li><span class="check">✓</span> Shift notes</li>
-          <li><span class="check">✓</span> Unlimited participant profiles</li>
-          <li style="color:var(--text-mid);"><span style="color:#EF4444;margin-right:6px;">✕</span>Invoicing</li>
-          <li style="color:var(--text-mid);"><span style="color:#EF4444;margin-right:6px;">✕</span>Revenue tracking</li>
-          <li style="color:var(--text-mid);"><span style="color:#EF4444;margin-right:6px;">✕</span>Compliance & audit</li>
+        <div class="p-note">Forever free</div>
+        <div class="p-divider"></div>
+        <ul class="p-list">
+          <li><span class="p-check">✓</span> Shift logging &amp; clock on/off</li>
+          <li><span class="p-check">✓</span> Shift notes</li>
+          <li><span class="p-check">✓</span> Dashboard overview</li>
         </ul>
-        <a href="https://apps.apple.com/au/app/id6787370760" class="pricing-btn" style="background:var(--surface);color:var(--blue);border:1.5px solid var(--blue);margin-bottom:8px;display:flex;align-items:center;justify-content:center;gap:8px;">
-          <svg width="18" height="18" viewBox="0 0 814 1000" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M788.1 340.9c-5.8 4.5-108.2 62.2-108.2 190.5 0 148.4 130.3 200.9 134.2 202.2-.6 3.2-20.7 71.9-68.7 141.9-42.8 61.6-87.5 123.1-155.5 123.1s-85.5-39.5-164-39.5c-76 0-103.7 40.8-165.9 40.8s-105-57.8-155.5-127.4C46 790.7 0 663 0 541.8c0-207.5 135.4-317.3 269-317.3 70.1 0 128.4 46.4 172.5 46.4 42.8 0 109.8-49 192.5-49 30.8 0 134.2 2.6 198.3 99zM623.1 87.5c-65.9 29.5-120.9 100.2-120.9 179.1 0 7.7.6 15.5 1.9 22.6 5.2.6 10.4 1.3 15.5 1.3 59.6 0 111.9-27.2 147.3-71.9 31.4-39.5 49-90.8 49-140.2 0-6.4-.6-12.8-1.9-19.2-50.3 5.2-89.9 27.9-90.9 28.3z"/></svg>
-          App Store
-        </a>
-        <a href="https://play.google.com/store/apps/details?id=au.com.wattle.app" class="pricing-btn" style="background:var(--surface);color:var(--blue);border:1.5px solid var(--blue);display:flex;align-items:center;justify-content:center;gap:8px;">
-          <svg width="18" height="18" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M48 421.3V90.7c0-13.3 15.2-20.6 25.7-12.5l186.6 165.3L73.7 433.8C63.2 441.9 48 434.6 48 421.3z" fill="#32BBFF"/><path d="M48 90.7c0-13.3 15.2-20.6 25.7-12.5l186.6 165.3-55.5 49.2L48 90.7z" fill="#32BBFF"/><path d="M339.9 208.5l-79.6-70.5 55.4-49.1c10.5-9.3 26.8-2.8 28.5 11.2l14.5 93.4-18.8 15z" fill="#FFD900"/><path d="M339.9 303.5l18.8 15-14.5 93.4c-1.7 14-18 20.5-28.5 11.2l-55.4-49.1 79.6-70.5z" fill="#F93448"/><path d="M260.3 256l79.6-47.5 57.4 34.3c12.2 7.3 12.2 24.1 0 31.4l-57.4 34.3L260.3 256z" fill="#00EE76"/></svg>
-          Google Play
-        </a>
+        <a href="#" class="p-btn p-btn-free">Download free</a>
       </div>
 
-      <div class="pricing-card">
-        <div class="pricing-tier">Starter</div>
-        <div class="pricing-participants">1–3 participants</div>
-        <div class="pricing-price">
-          <span class="price-dollar">$</span>
-          <span class="price-amount">10</span>
-          <span class="price-period">/mo</span>
+      <!-- STARTER -->
+      <div class="p-card">
+        <div class="p-label">Starter</div>
+        <div class="p-participants">1–3 participants</div>
+        <div class="p-price">
+          <span class="p-dollar">$</span>
+          <span class="p-amount">10</span>
+          <span class="p-period">/mo</span>
         </div>
-        <div class="pricing-trial">After 30-day free trial</div>
-        <div class="pricing-divider"></div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> Shift logging & clock on/off</li>
-          <li><span class="check">✓</span> Invoice generation</li>
-          <li><span class="check">✓</span> Revenue & expense tracking</li>
-          <li><span class="check">✓</span> Compliance & certifications</li>
-          <li><span class="check">✓</span> Incident & risk register</li>
-          <li><span class="check">✓</span> Audit pack export</li>
-          <li><span class="check">✓</span> Calendar view</li>
+        <div class="p-note">After 30-day free trial</div>
+        <div class="p-divider"></div>
+        <ul class="p-list">
+          <li><span class="p-check">✓</span> Shift logging &amp; clock on/off</li>
+          <li><span class="p-check">✓</span> Invoice generation</li>
+          <li><span class="p-check">✓</span> Participant management</li>
+          <li><span class="p-check">✓</span> Compliance &amp; certifications</li>
+          <li><span class="p-check">✓</span> Revenue &amp; expenses</li>
+          <li><span class="p-check">✓</span> Audit pack export</li>
+          <li><span class="p-check">✓</span> Calendar view</li>
         </ul>
-        <a href="#" class="pricing-btn">Start free trial</a>
+        <a href="#" class="p-btn p-btn-paid">Start free trial</a>
       </div>
 
-      <div class="pricing-card featured">
-        <div class="pricing-badge">Most popular</div>
-        <div class="pricing-tier">Growth</div>
-        <div class="pricing-participants">4–6 participants</div>
-        <div class="pricing-price">
-          <span class="price-dollar">$</span>
-          <span class="price-amount">20</span>
-          <span class="price-period">/mo</span>
+      <!-- GROWTH -->
+      <div class="p-card">
+        <div class="p-label">Growth</div>
+        <div class="p-participants">4–6 participants</div>
+        <div class="p-price">
+          <span class="p-dollar">$</span>
+          <span class="p-amount">20</span>
+          <span class="p-period">/mo</span>
         </div>
-        <div class="pricing-trial">After 30-day free trial</div>
-        <div class="pricing-divider"></div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> Shift logging & clock on/off</li>
-          <li><span class="check">✓</span> Invoice generation</li>
-          <li><span class="check">✓</span> Revenue & expense tracking</li>
-          <li><span class="check">✓</span> Compliance & certifications</li>
-          <li><span class="check">✓</span> Incident & risk register</li>
-          <li><span class="check">✓</span> Audit pack export</li>
-          <li><span class="check">✓</span> Calendar view</li>
+        <div class="p-note">After 30-day free trial</div>
+        <div class="p-divider"></div>
+        <ul class="p-list">
+          <li><span class="p-check">✓</span> Everything in Starter</li>
+          <li><span class="p-check">✓</span> Up to 6 participants</li>
         </ul>
-        <a href="#" class="pricing-btn">Start free trial</a>
+        <a href="#" class="p-btn p-btn-paid">Start free trial</a>
       </div>
 
-      <div class="pricing-card">
-        <div class="pricing-tier">Pro</div>
-        <div class="pricing-participants">7+ participants</div>
-        <div class="pricing-price">
-          <span class="price-dollar">$</span>
-          <span class="price-amount">30</span>
-          <span class="price-period">/mo</span>
+      <!-- PRO -->
+      <div class="p-card">
+        <div class="p-label">Pro</div>
+        <div class="p-participants">7+ participants</div>
+        <div class="p-price">
+          <span class="p-dollar">$</span>
+          <span class="p-amount">30</span>
+          <span class="p-period">/mo</span>
         </div>
-        <div class="pricing-trial">After 30-day free trial</div>
-        <div class="pricing-divider"></div>
-        <ul class="pricing-features">
-          <li><span class="check">✓</span> Shift logging & clock on/off</li>
-          <li><span class="check">✓</span> Invoice generation</li>
-          <li><span class="check">✓</span> Revenue & expense tracking</li>
-          <li><span class="check">✓</span> Compliance & certifications</li>
-          <li><span class="check">✓</span> Incident & risk register</li>
-          <li><span class="check">✓</span> Audit pack export</li>
-          <li><span class="check">✓</span> Calendar view</li>
+        <div class="p-note">After 30-day free trial</div>
+        <div class="p-divider"></div>
+        <ul class="p-list">
+          <li><span class="p-check">✓</span> Everything in Starter</li>
+          <li><span class="p-check">✓</span> Unlimited participants</li>
         </ul>
-        <a href="#" class="pricing-btn">Start free trial</a>
+        <a href="#" class="p-btn p-btn-paid">Start free trial</a>
       </div>
 
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials">
+  <div class="testi-inner" style="grid-template-columns:1fr;">
+    <div class="testi" style="max-width:640px;margin:0 auto;">
+      <div class="testi-stars">★★★★★</div>
+      <p class="testi-quote">Love how quick and easy it is to use. I'm not long home from work, exhausted, and dreaded doing the two invoices and notes I had to do. Took only a couple of minutes!!</p>
+      <div class="testi-author"><span class="testi-name">App Store review</span></div>
     </div>
   </div>
 </section>
 
 <!-- CTA STRIP -->
-<div class="cta-strip">
-  <h2>Built by a support worker, for support workers</h2>
-  <p>MyWattle was designed from real experience in the NDIS sector — not by a software company guessing at your needs.</p>
-  <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-    <a href="https://apps.apple.com/app/mywattle/id6787370760" class="btn-primary" target="_blank" rel="noopener">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
-      Download on App Store
+
+<section class="cta-strip">
+  <h2>Made by a support worker, for support workers</h2>
+  <p>Built from real experience in the NDIS sector — not by a software company guessing at your needs.</p>
+  <div class="dl-row">
+    <a href="#" class="dl-btn dl-ios">
+      <svg class="dl-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/>
+      </svg>
+      <div class="dl-label">
+        <span class="dl-label-sub">Download on the</span>
+        <span class="dl-label-main">App Store</span>
+      </div>
     </a>
-    <a href="https://play.google.com/store/apps/details?id=au.com.wattle.app" class="btn-secondary" target="_blank" rel="noopener">
-      ▶ Get it on Google Play
+    <a href="#" class="dl-btn dl-android">
+      <svg class="dl-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3.18 23.76a2 2 0 01-.93-1.71V1.95a2 2 0 01.93-1.71l.11-.06 12.09 12.09v.28L3.29 23.82l-.11-.06zM16.29 14.97L12.9 11.59l-9.72 5.61 13.11-2.23zM20.14 13.27l-3.58 2.07-3.49-3.49 3.49-3.49 3.58 2.06a2.02 2.02 0 010 2.86zM3.18.29L16.29 9.03l-3.39 3.39L3.07.46l.11-.17z"/>
+      </svg>
+      <div class="dl-label">
+        <span class="dl-label-sub">Get it on</span>
+        <span class="dl-label-main">Google Play</span>
+      </div>
     </a>
   </div>
-</div>
+</section>
 
 <!-- FOOTER -->
 <footer>
   <a href="#" class="footer-logo">
-    <div class="footer-logo-mark">W</div>
-    <span class="footer-logo-text">MyWattle</span>
+    <div class="footer-mark">W</div>
+    <span class="footer-name">MyWattle</span>
   </a>
   <div class="footer-links">
     <a href="privacy.html">Privacy Policy</a>
-    <a href="mailto:matlacey1979@gmail.com">Contact</a>
-    <a href="mailto:matlacey1979@gmail.com">Support</a>
+    <a href="terms.html">Terms</a>
+    <a href="mailto:support@wattleapp.com.au">Support</a>
   </div>
   <div class="footer-copy">© 2026 MyWattle. All rights reserved.</div>
 </footer>
+
+</body>
+</html>
