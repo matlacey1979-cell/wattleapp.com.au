@@ -518,10 +518,7 @@ footer {
           <li><span class="p-check">✓</span> Shift notes</li>
           <li><span class="p-check">✓</span> Dashboard overview</li>
         </ul>
-        <div style="display:flex;gap:8px;">
-          <a href="https://apps.apple.com/us/app/mywattle/id6787370760" class="p-btn p-btn-free" style="flex:1;font-size:12px;">App Store</a>
-          <a href="https://play.google.com/store/apps/details?id=au.com.wattle.app" class="p-btn p-btn-free" style="flex:1;font-size:12px;">Google Play</a>
-        </div>
+        <a href="#" onclick="goStore(event)" class="p-btn p-btn-free">Download free</a>
       </div>
 
       <!-- STARTER -->
@@ -544,10 +541,7 @@ footer {
           <li><span class="p-check">✓</span> Audit pack export</li>
           <li><span class="p-check">✓</span> Calendar view</li>
         </ul>
-        <div style="display:flex;gap:8px;">
-          <a href="https://apps.apple.com/us/app/mywattle/id6787370760" class="p-btn p-btn-paid" style="flex:1;font-size:12px;">App Store</a>
-          <a href="https://play.google.com/store/apps/details?id=au.com.wattle.app" class="p-btn p-btn-paid" style="flex:1;font-size:12px;">Google Play</a>
-        </div>
+        <a href="#" onclick="goStore(event)" class="p-btn p-btn-paid">Start free trial</a>
       </div>
 
       <!-- GROWTH -->
@@ -565,10 +559,7 @@ footer {
           <li><span class="p-check">✓</span> Everything in Starter</li>
           <li><span class="p-check">✓</span> Up to 6 participants</li>
         </ul>
-        <div style="display:flex;gap:8px;">
-          <a href="https://apps.apple.com/us/app/mywattle/id6787370760" class="p-btn p-btn-paid" style="flex:1;font-size:12px;">App Store</a>
-          <a href="https://play.google.com/store/apps/details?id=au.com.wattle.app" class="p-btn p-btn-paid" style="flex:1;font-size:12px;">Google Play</a>
-        </div>
+        <a href="#" onclick="goStore(event)" class="p-btn p-btn-paid">Start free trial</a>
       </div>
 
       <!-- PRO -->
@@ -586,10 +577,7 @@ footer {
           <li><span class="p-check">✓</span> Everything in Starter</li>
           <li><span class="p-check">✓</span> Unlimited participants</li>
         </ul>
-        <div style="display:flex;gap:8px;">
-          <a href="https://apps.apple.com/us/app/mywattle/id6787370760" class="p-btn p-btn-paid" style="flex:1;font-size:12px;">App Store</a>
-          <a href="https://play.google.com/store/apps/details?id=au.com.wattle.app" class="p-btn p-btn-paid" style="flex:1;font-size:12px;">Google Play</a>
-        </div>
+        <a href="#" onclick="goStore(event)" class="p-btn p-btn-paid">Start free trial</a>
       </div>
 
     </div>
@@ -648,5 +636,14 @@ footer {
   <div class="footer-copy">© 2026 MyWattle. All rights reserved.</div>
 </footer>
 
+<script>
+  var IOS = 'https://apps.apple.com/us/app/mywattle/id6787370760';
+  var ANDROID = 'https://play.google.com/store/apps/details?id=au.com.wattle.app';
+  function goStore(e) {
+    e.preventDefault();
+    var ua = navigator.userAgent || '';
+    window.location.href = /android/i.test(ua) ? ANDROID : IOS;
+  }
+</script>
 </body>
 </html>
