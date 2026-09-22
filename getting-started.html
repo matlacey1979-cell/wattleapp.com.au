@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Independent NDIS Support Worker Guide</title>
+<meta name="description" content="Everything you need to know to get started as an independent NDIS support worker in Australia — ABN, clearances, rates, insurance, and finding participants.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --forest:      #1A3D2B;
+  --forest-mid:  #2D6A4F;
+  --forest-lite: #4A8A68;
+  --gold:        #C99618;
+  --gold-pale:   #FFF8E1;
+  --gold-bg:     rgba(201,150,24,0.12);
+  --sage:        #EAF1EB;
+  --cream:       #F8FAF8;
+  --surface:     #FFFFFF;
+  --ink:         #101C14;
+  --mid:         #4D6356;
+  --muted:       #8EA394;
+  --border:      #D2E2D7;
+  --ok:          #2D8A5A;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.7;
+}
+
+/* ── NAV ── */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 60px;
+  background: rgba(26,61,43,0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+.nav-mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px; font-weight: 800; color: var(--forest);
+}
+.nav-name { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.2px; }
+.nav-cta {
+  background: var(--gold); color: var(--forest);
+  font-size: 13px; font-weight: 700;
+  padding: 8px 20px; border-radius: 8px;
+  text-decoration: none;
+}
+
+/* ── HERO ── */
+.hero {
+  background: var(--forest);
+  padding: 100px 40px 64px;
+}
+.hero-inner {
+  max-width: 760px;
+  margin: 0 auto;
+}
+.breadcrumb {
+  font-size: 13px; font-weight: 600;
+  color: rgba(255,255,255,0.55);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 20px;
+}
+.breadcrumb a { color: rgba(255,255,255,0.55); text-decoration: none; }
+.breadcrumb a:hover { color: var(--gold); }
+.breadcrumb span { margin: 0 8px; }
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(32px, 5vw, 48px);
+  font-weight: 800;
+  color: #fff;
+  line-height: 1.15;
+  text-wrap: balance;
+  margin-bottom: 20px;
+}
+.hero-sub {
+  font-size: 17px;
+  color: rgba(255,255,255,0.75);
+  max-width: 580px;
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+.hero-meta {
+  font-size: 13px;
+  color: rgba(255,255,255,0.4);
+}
+
+/* ── LAYOUT ── */
+.page-body {
+  max-width: 760px;
+  margin: 0 auto;
+  padding: 56px 40px 80px;
+}
+
+/* ── TOC ── */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 28px 32px;
+  margin-bottom: 48px;
+}
+.toc-title {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+.toc ol {
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.toc li {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--forest-mid);
+}
+.toc a {
+  color: var(--forest-mid);
+  text-decoration: none;
+}
+.toc a:hover { color: var(--gold); text-decoration: underline; }
+
+/* ── SECTION ── */
+.guide-section {
+  margin-bottom: 52px;
+  scroll-margin-top: 80px;
+}
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 10px;
+}
+.guide-section h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(22px, 3vw, 28px);
+  font-weight: 700;
+  color: var(--forest);
+  line-height: 1.25;
+  margin-bottom: 18px;
+  text-wrap: balance;
+}
+.guide-section p {
+  font-size: 16px;
+  color: #2A3D32;
+  line-height: 1.75;
+  margin-bottom: 16px;
+}
+.guide-section p:last-child { margin-bottom: 0; }
+.guide-section ul, .guide-section ol {
+  padding-left: 22px;
+  margin-bottom: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.guide-section li {
+  font-size: 16px;
+  color: #2A3D32;
+  line-height: 1.65;
+}
+.guide-section strong { color: var(--ink); }
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 52px 0;
+}
+
+/* ── CALLOUT ── */
+.callout {
+  background: var(--gold-bg);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 24px 0;
+}
+.callout p {
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 0 !important;
+}
+.callout strong { color: var(--forest); }
+
+.callout-sage {
+  background: var(--sage);
+  border-left: 3px solid var(--forest-mid);
+  border-radius: 0 8px 8px 0;
+  padding: 16px 20px;
+  margin: 24px 0;
+}
+.callout-sage p {
+  font-size: 15px;
+  color: var(--ink);
+  margin-bottom: 0 !important;
+}
+
+/* ── RATES TABLE ── */
+.rate-table-wrap { overflow-x: auto; margin: 20px 0; }
+.rate-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 14px;
+}
+.rate-table thead th {
+  background: var(--forest);
+  color: #fff;
+  padding: 11px 14px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.rate-table thead th:not(:first-child) { text-align: right; }
+.rate-table tbody td {
+  padding: 11px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--ink);
+  vertical-align: top;
+}
+.rate-table tbody td:not(:first-child) {
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.rate-table tbody tr:last-child td { border-bottom: none; }
+.rate-table tbody tr:hover td { background: var(--sage); }
+.rate-table .rate-cat {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-top: 18px;
+}
+.rate-note {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* ── CHECKLIST ── */
+.checklist-box {
+  background: var(--surface);
+  border: 2px solid var(--forest);
+  border-radius: 14px;
+  padding: 32px 36px;
+  margin: 40px 0;
+}
+.checklist-box h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--forest);
+  margin-bottom: 6px;
+}
+.checklist-box .cl-sub {
+  font-size: 14px;
+  color: var(--muted);
+  margin-bottom: 24px;
+}
+.cl-group {
+  margin-bottom: 20px;
+}
+.cl-group-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.cl-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 9px 0;
+  border-bottom: 1px solid var(--border);
+}
+.cl-item:last-child { border-bottom: none; }
+.cl-box {
+  width: 18px; height: 18px;
+  border: 2px solid var(--border);
+  border-radius: 4px;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.cl-text {
+  font-size: 15px;
+  color: var(--ink);
+  line-height: 1.5;
+}
+.cl-text span {
+  display: block;
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── APP CTA ── */
+.app-cta {
+  background: var(--forest);
+  border-radius: 16px;
+  padding: 36px 40px;
+  margin: 48px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.app-cta h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #fff;
+  text-wrap: balance;
+}
+.app-cta p {
+  font-size: 15px;
+  color: rgba(255,255,255,0.7);
+  line-height: 1.6;
+  margin-bottom: 0 !important;
+}
+.app-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--gold);
+  color: var(--forest);
+  font-size: 14px;
+  font-weight: 700;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  align-self: flex-start;
+}
+.app-cta-btn:hover { opacity: 0.9; }
+.app-cta-free {
+  font-size: 13px;
+  color: rgba(255,255,255,0.45);
+  font-weight: 500;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: var(--forest);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+  padding: 48px 40px;
+}
+.footer-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+.footer-mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px; font-weight: 800; color: var(--forest);
+}
+.footer-name { font-size: 18px; font-weight: 700; color: #fff; }
+.footer-links { display: flex; gap: 32px; flex-wrap: wrap; justify-content: center; }
+.footer-links a { font-size: 14px; color: rgba(255,255,255,0.55); text-decoration: none; }
+.footer-links a:hover { color: #fff; }
+.footer-copy { font-size: 13px; color: rgba(255,255,255,0.3); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 600px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 90px 20px 48px; }
+  .page-body { padding: 40px 20px 64px; }
+  .toc { padding: 20px; }
+  .checklist-box { padding: 24px 20px; }
+  .app-cta { padding: 28px 24px; }
+  footer { padding: 40px 20px; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="/" class="nav-logo">
+    <div class="nav-mark">W</div>
+    <span class="nav-name">MyWattle</span>
+  </a>
+  <a href="https://apps.apple.com/us/app/mywattle/id6787370760" class="nav-cta">Get started free</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="breadcrumb">
+      <a href="/">MyWattle</a>
+      <span>/</span>
+      Guides
+    </div>
+    <h1>Getting started as an independent NDIS support worker</h1>
+    <p class="hero-sub">Everything you need to set up, get compliant, and start working — without the overwhelm.</p>
+    <div class="hero-meta">10 min read &nbsp;·&nbsp; Updated September 2026</div>
+  </div>
+</section>
+
+<!-- BODY -->
+<div class="page-body">
+
+  <!-- TOC -->
+  <div class="toc">
+    <div class="toc-title">In this guide</div>
+    <ol>
+      <li><a href="#what-independent-means">What "independent" actually means</a></li>
+      <li><a href="#registered-vs-unregistered">Registered vs unregistered provider</a></li>
+      <li><a href="#abn">Set up your ABN</a></li>
+      <li><a href="#mandatory-checks">Mandatory checks and clearances</a></li>
+      <li><a href="#training">Qualifications and training</a></li>
+      <li><a href="#insurance">Insurance you need</a></li>
+      <li><a href="#rates">NDIS pricing rates 2024–25</a></li>
+      <li><a href="#finding-participants">Finding your first participants</a></li>
+      <li><a href="#record-keeping">Record keeping requirements</a></li>
+      <li><a href="#running-your-business">Running your business day-to-day</a></li>
+    </ol>
+  </div>
+
+  <!-- 1 -->
+  <section class="guide-section" id="what-independent-means">
+    <div class="section-eyebrow">01</div>
+    <h2>What "independent" actually means</h2>
+    <p>An independent support worker is a sole trader who provides NDIS supports directly to participants — without being employed by a registered provider. You invoice participants or their plan managers yourself, set your own hours, and take on the responsibilities (and freedoms) that come with running a small business.</p>
+    <p>This model has grown quickly in the NDIS because participants value continuity and personal choice in who supports them. For workers, it often means better pay rates, flexible scheduling, and genuine relationships with the people you support.</p>
+    <div class="callout">
+      <p><strong>The trade-off:</strong> There is no employer to handle your tax, superannuation, insurance, or record keeping. You're responsible for all of it. This guide walks you through each piece.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 2 -->
+  <section class="guide-section" id="registered-vs-unregistered">
+    <div class="section-eyebrow">02</div>
+    <h2>Registered vs unregistered provider</h2>
+    <p>The NDIS separates providers into two categories, and knowing which one applies to you shapes almost every other decision you make.</p>
+    <p><strong>Registered providers</strong> are audited by the NDIS Quality and Safeguards Commission. They can work with all participants, including those whose plans are Agency-managed. Registration involves an application, a practice standards audit, and ongoing compliance obligations. It makes sense for larger organisations or workers delivering high-intensity supports (e.g. behaviour support, complex nursing).</p>
+    <p><strong>Unregistered providers</strong> can work with participants whose plans are <em>self-managed</em> or <em>plan-managed</em> — which covers a large majority of participants. You do not need to be registered to work in this space. Most independent support workers start here, and many never need to register.</p>
+    <div class="callout-sage">
+      <p>Around 40% of NDIS participants are plan-managed and a further 30% are self-managed. That's a large pool of people you can support as an unregistered sole trader.</p>
+    </div>
+    <p>If a participant is Agency-managed (their funding is administered directly by the NDIA), they can only use registered providers. Always confirm the participant's plan management type before agreeing to work together.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 3 -->
+  <section class="guide-section" id="abn">
+    <div class="section-eyebrow">03</div>
+    <h2>Set up your ABN</h2>
+    <p>You need an Australian Business Number (ABN) to invoice participants or plan managers legally. Without one, you cannot operate as a sole trader in Australia.</p>
+    <p>Registration is free and takes about 15 minutes at <strong>abr.gov.au</strong>. You'll need your tax file number (TFN) and a description of your business activity — something like "NDIS personal support and community access services."</p>
+    <p>Once you have your ABN, you should also:</p>
+    <ul>
+      <li>Register for <strong>GST</strong> if you expect to earn more than $75,000 per year (most independent workers won't hit this immediately, but it's worth planning for)</li>
+      <li>Open a <strong>dedicated business bank account</strong> — it makes tax time far simpler</li>
+      <li>Set aside <strong>25–30% of every invoice</strong> for tax and superannuation (you are responsible for your own super as a sole trader)</li>
+    </ul>
+    <div class="callout">
+      <p><strong>Tip:</strong> Speak to an accountant familiar with NDIS sole traders early. The cost of an hour's advice pays itself back quickly in avoided mistakes.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 4 -->
+  <section class="guide-section" id="mandatory-checks">
+    <div class="section-eyebrow">04</div>
+    <h2>Checks and clearances</h2>
+    <p>One check is legally required for all NDIS workers. Beyond that, several others are routinely expected by participants and plan managers — treat them as practical necessities even if they aren't legally mandated for unregistered sole traders.</p>
+    <ul>
+      <li>
+        <strong>NDIS Worker Screening Check</strong> — the only check required by law for all NDIS workers, including unregistered sole traders. Applied for through your state or territory screening unit. Costs vary by state (typically $11–$140). You must have a clearance before starting work.
+      </li>
+      <li>
+        <strong>Working With Children Check (WWCC)</strong> — required by state and territory law if you support participants under 18. State-specific. In most states the standard check costs $80–$105.
+      </li>
+      <li>
+        <strong>National Police Check</strong> — not legally required for unregistered workers, but most participants and plan managers expect one. Available through the Australian Criminal Intelligence Commission website (~$42) or accredited agencies.
+      </li>
+      <li>
+        <strong>First Aid Certificate</strong> — HLTAID011 (Provide First Aid) is not legally required for unregistered sole traders, but many participants ask for it and it's genuinely useful. Valid for 3 years; CPR component must be updated annually.
+      </li>
+    </ul>
+    <div class="callout-sage">
+      <p>Apply for your NDIS Worker Screening Check as early as possible — processing can take 2–6 weeks depending on your state. Don't wait until you have a participant lined up.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 5 -->
+  <section class="guide-section" id="training">
+    <div class="section-eyebrow">05</div>
+    <h2>Qualifications and training</h2>
+    <p>No specific formal qualification is mandated for most personal support work under the NDIS. However, certain credentials significantly increase your employability and are expected by many participants:</p>
+    <ul>
+      <li><strong>Certificate III in Individual Support (CHC33021)</strong> — the industry standard entry-level qualification. Covers disability, aged care, and home and community care. Available through TAFEs and RTOs. Take 6–12 months part-time.</li>
+      <li><strong>Certificate IV in Disability (CHC43121)</strong> — for workers who want to take on more complex supports or move toward team leader roles.</li>
+      <li><strong>Medication Administration</strong> — required if you assist participants with medication. Check your state's requirements, as they differ.</li>
+      <li><strong>Manual Handling</strong> — practical training in safe movement and transferring techniques. Often required by participants with high physical support needs.</li>
+    </ul>
+    <p>Many community colleges and RTOs offer short online courses in areas like positive behaviour support, autism awareness, and mental health first aid. These add real value without the commitment of a full certificate.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 6 -->
+  <section class="guide-section" id="insurance">
+    <div class="section-eyebrow">06</div>
+    <h2>Insurance you need</h2>
+    <p>As a sole trader, your employer's insurance no longer covers you. You need to arrange your own policies.</p>
+    <ul>
+      <li>
+        <strong>Public Liability Insurance</strong> — covers you if a third party suffers injury or property damage as a result of your work. Aim for a minimum of $10 million cover. Typical annual cost: $300–$600 for support workers.
+      </li>
+      <li>
+        <strong>Professional Indemnity Insurance</strong> — protects you if a participant claims your advice or support caused them financial or personal harm. Some plan managers require this before agreeing to process your invoices.
+      </li>
+    </ul>
+    <div class="callout">
+      <p><strong>Note:</strong> Some insurers offer combined PL + PI policies designed for sole-trader NDIS workers. Compare at least three quotes and confirm each policy explicitly covers NDIS disability support work.</p>
+    </div>
+    <p>Consider also whether you need <strong>income protection insurance</strong>. Unlike an employee, you have no sick leave — a month off the tools can mean a month without income.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 7 -->
+  <section class="guide-section" id="rates">
+    <div class="section-eyebrow">07</div>
+    <h2>NDIS pricing rates 2024–25</h2>
+    <p>The NDIS Pricing Arrangements and Price Limits document sets the <em>maximum</em> hourly rates that can be claimed from a participant's plan. You can charge less — you cannot charge more.</p>
+    <p>Rates are set by support category, time of day, and day of week. The table below covers the most common line items for personal support workers.</p>
+
+    <div class="rate-table-wrap">
+      <table class="rate-table">
+        <thead>
+          <tr>
+            <th>Support type</th>
+            <th>Weekday</th>
+            <th>Saturday</th>
+            <th>Sunday</th>
+            <th>Public Holiday</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="rate-cat" colspan="5">Assistance with Daily Activities (Core)</td>
+          </tr>
+          <tr>
+            <td>Standard — daytime (before 8pm)</td>
+            <td>$67.56</td>
+            <td>$94.82</td>
+            <td>$122.08</td>
+            <td>$149.34</td>
+          </tr>
+          <tr>
+            <td>Standard — evening (after 8pm)</td>
+            <td>$74.32</td>
+            <td>$94.82</td>
+            <td>$122.08</td>
+            <td>$149.34</td>
+          </tr>
+          <tr>
+            <td>Standard — overnight (sleepover)</td>
+            <td colspan="4" style="text-align:left;color:var(--mid)">$267.76 per shift (plus active overnight rate if woken)</td>
+          </tr>
+          <tr>
+            <td class="rate-cat" colspan="5">Community Participation (Core)</td>
+          </tr>
+          <tr>
+            <td>Standard — daytime</td>
+            <td>$67.56</td>
+            <td>$94.82</td>
+            <td>$122.08</td>
+            <td>$149.34</td>
+          </tr>
+          <tr>
+            <td class="rate-cat" colspan="5">Capacity Building — Support Coordination</td>
+          </tr>
+          <tr>
+            <td>Support Coordination</td>
+            <td>$100.14</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="rate-note">Rates are in AUD per hour. Source: NDIS Pricing Arrangements and Price Limits 2024–25. Always verify current rates at ndis.gov.au before invoicing.</p>
+
+    <p>As a sole trader, you can negotiate any rate <em>up to</em> the NDIS price limit. Many independent workers charge the full rate — you have overheads (insurance, admin, tax) that an employed worker's employer covers.</p>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 8 -->
+  <section class="guide-section" id="finding-participants">
+    <div class="section-eyebrow">08</div>
+    <h2>Finding your first participants</h2>
+    <p>Most independent support workers build their client base through a combination of word of mouth, disability-specific platforms, and support coordinators.</p>
+    <ul>
+      <li><strong>Online platforms</strong> — Hireup, Mable, and Better Caring connect participants directly with independent workers. Create a strong profile: include your qualifications, clearances, and specific skills (e.g. autism experience, manual handling).</li>
+      <li><strong>Support coordinators</strong> — Build relationships with local support coordinators. They are the connectors in the NDIS ecosystem and often have participants actively looking for reliable workers.</li>
+      <li><strong>Local community networks</strong> — Disability advocacy groups, community centres, and carer networks are all worth engaging with. Participants find workers they trust through people they already know.</li>
+      <li><strong>Social media</strong> — A simple LinkedIn profile or local Facebook community group can generate enquiries, especially in regional areas where platform-matched workers are scarcer.</li>
+    </ul>
+    <div class="callout-sage">
+      <p>When you do get an enquiry, meet the participant (and their support coordinator if they have one) before agreeing to anything. The fit between worker and participant matters enormously for both parties.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 9 -->
+  <section class="guide-section" id="record-keeping">
+    <div class="section-eyebrow">09</div>
+    <h2>Record keeping requirements</h2>
+    <p>Good records protect you and your participants. The NDIS requires that workers keep certain documentation, and participants (or their plan managers) can ask to see it.</p>
+    <ul>
+      <li><strong>Shift notes</strong> — a brief record of what was done each shift, any incidents, and how the participant was. These don't need to be essays — a few clear sentences per shift is enough.</li>
+      <li><strong>Invoices</strong> — must include your ABN, the participant's name, the NDIS support line item (from the Price Guide), the date of service, hours worked, and the amount charged.</li>
+      <li><strong>Service agreements</strong> — a written agreement between you and the participant (or their nominee) that sets out what supports will be delivered, when, at what rate, and cancellation terms.</li>
+      <li><strong>Incident reports</strong> — if anything goes wrong during a shift (injury, property damage, a disclosure), it needs to be documented and reported as appropriate.</li>
+      <li><strong>Tax records</strong> — keep all invoices, receipts for business expenses, and bank statements. The ATO requires you to keep these for five years.</li>
+    </ul>
+    <div class="callout">
+      <p><strong>Short-notice cancellations:</strong> The NDIS allows you to charge up to 100% of the agreed support if a participant cancels with fewer than 2 business days' notice. Make sure your service agreement includes your cancellation policy.</p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- 10 -->
+  <section class="guide-section" id="running-your-business">
+    <div class="section-eyebrow">10</div>
+    <h2>Running your business day-to-day</h2>
+    <p>Once you're set up and working, the ongoing admin is manageable if you build habits from the start.</p>
+    <ul>
+      <li><strong>Clock on and off</strong> at every shift — this is your evidence if a participant or plan manager ever disputes hours worked.</li>
+      <li><strong>Invoice promptly</strong> — plan managers typically pay within 5–10 business days of a valid invoice. The sooner you invoice, the sooner you're paid.</li>
+      <li><strong>Stay current with your checks</strong> — NDIS Worker Screening clearances expire. First Aid certificates expire. Calendar reminders for renewals save you from scrambling.</li>
+      <li><strong>Review rates annually</strong> — the NDIS releases updated pricing arrangements each financial year. Update your rates (and service agreements) when they change.</li>
+      <li><strong>Communicate proactively</strong> — if something changes (your availability, a health issue, a policy update), tell your participants or their coordinator early. Reliability and honesty are what keep you working.</li>
+    </ul>
+  </section>
+
+  <hr class="divider">
+
+  <!-- PRE-SHIFT CHECKLIST -->
+  <div class="checklist-box">
+    <h3>Before your first shift — checklist</h3>
+    <p class="cl-sub">Use this as your go / no-go before you start working independently.</p>
+
+    <div class="cl-group">
+      <div class="cl-group-title">Required by law</div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">ABN registered and active<span>abr.gov.au — free, takes 15 minutes</span></div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">NDIS Worker Screening Check cleared<span>The only check legally required for all NDIS workers</span></div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Working With Children Check (if supporting under-18s)<span>Required by state law when working with minors</span></div></div>
+    </div>
+    <div class="cl-group">
+      <div class="cl-group-title">Expected by most participants &amp; plan managers</div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">National Police Check<span>Not legally required but routinely requested</span></div></div>
+    </div>
+
+    <div class="cl-group">
+      <div class="cl-group-title">Insurance &amp; qualifications</div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Public Liability Insurance in place<span>Minimum $10M cover, explicitly covers NDIS work</span></div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">First Aid Certificate current (HLTAID011)</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Any additional qualifications required for this participant's supports</div></div>
+    </div>
+
+    <div class="cl-group">
+      <div class="cl-group-title">Admin</div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Business bank account opened</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Service agreement signed with participant</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Invoicing process confirmed with participant or plan manager</div></div>
+      <div class="cl-item"><div class="cl-box"></div><div class="cl-text">Shift notes method sorted (paper, app, or notes)</div></div>
+    </div>
+  </div>
+
+  <!-- APP CTA -->
+  <div class="app-cta">
+    <h3>Built for independent support workers</h3>
+    <p>MyWattle handles your clock-ons, shift notes, participant records, and NDIS invoices — all in one place. Free to start, no account needed on day one.</p>
+    <a href="https://apps.apple.com/us/app/mywattle/id6787370760" class="app-cta-btn">
+      Download free
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </a>
+    <div class="app-cta-free">No credit card · No account required to get started</div>
+  </div>
+
+</div><!-- end page-body -->
+
+<!-- FOOTER -->
+<footer>
+  <a href="/" class="footer-logo">
+    <div class="footer-mark">W</div>
+    <span class="footer-name">MyWattle</span>
+  </a>
+  <div class="footer-links">
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms</a>
+    <a href="mailto:support@wattleapp.com.au">Support</a>
+  </div>
+  <div class="footer-copy">© 2026 MyWattle. All rights reserved.</div>
+</footer>
+
+</body>
+</html>

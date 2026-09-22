@@ -55,6 +55,9 @@ nav {
   font-size: 16px; font-weight: 800; color: var(--forest);
 }
 .nav-name { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.2px; }
+.nav-right { display: flex; align-items: center; gap: 24px; }
+.nav-link { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.7); text-decoration: none; }
+.nav-link:hover { color: #fff; }
 .nav-cta {
   background: var(--gold); color: var(--forest);
   font-size: 13px; font-weight: 700;
@@ -417,7 +420,10 @@ footer {
     <div class="nav-mark">W</div>
     <span class="nav-name">MyWattle</span>
   </a>
-  <a href="#" onclick="goStore(event)" class="nav-cta">Get started free</a>
+  <div class="nav-right">
+    <a href="getting-started.html" class="nav-link">Guide</a>
+    <a href="#" onclick="goStore(event)" class="nav-cta">Get started free</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -680,6 +686,7 @@ footer {
     <span class="footer-name">MyWattle</span>
   </a>
   <div class="footer-links">
+    <a href="getting-started.html">Guide</a>
     <a href="privacy.html">Privacy Policy</a>
     <a href="terms.html">Terms</a>
     <a href="mailto:support@wattleapp.com.au">Support</a>
