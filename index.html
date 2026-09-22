@@ -55,9 +55,16 @@ nav {
   font-size: 16px; font-weight: 800; color: var(--forest);
 }
 .nav-name { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.2px; }
-.nav-right { display: flex; align-items: center; gap: 24px; }
-.nav-link { font-size: 14px; font-weight: 500; color: rgba(255,255,255,0.7); text-decoration: none; }
-.nav-link:hover { color: #fff; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-link {
+  font-size: 13px; font-weight: 700; text-decoration: none;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.45);
+  padding: 7px 18px; border-radius: 8px;
+  letter-spacing: 0.01em;
+  transition: border-color 0.15s, background 0.15s;
+}
+.nav-link:hover { border-color: #fff; background: rgba(255,255,255,0.08); }
 .nav-cta {
   background: var(--gold); color: var(--forest);
   font-size: 13px; font-weight: 700;
@@ -421,7 +428,7 @@ footer {
     <span class="nav-name">MyWattle</span>
   </a>
   <div class="nav-right">
-    <a href="getting-started.html" class="nav-link">Guide</a>
+    <a href="getting-started.html" class="nav-link">Free starter guide</a>
     <a href="#" onclick="goStore(event)" class="nav-cta">Get started free</a>
   </div>
 </nav>
