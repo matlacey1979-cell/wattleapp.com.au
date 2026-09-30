@@ -381,7 +381,7 @@ nav {
   text-decoration: none;
 }
 .p-btn-free { background: var(--forest); color: #fff; }
-.p-btn-paid { background: var(--sage); color: var(--forest); border: 1px solid var(--border); }
+.p-btn-paid { background: transparent; color: var(--forest); border: 1.5px solid var(--forest-mid); }
 
 /* ── SCREENSHOTS ── */
 .screenshots { background: #f8faf9; padding: 96px 40px; }
@@ -476,9 +476,12 @@ footer {
 @media (max-width: 600px) {
   nav { padding: 0 16px; }
   .nav-link { display: none; }
-  .hero { padding: 96px 20px 72px; }
+  .hero { padding: 96px 20px 64px; }
+  .hero-badge { font-size: 11px; font-weight: 700; padding: 5px 14px; border-radius: 20px; margin-bottom: 16px; letter-spacing: 0.5px; border-width: 1px; }
+  .hero-badge-dot { display: none; }
+  .hero-note { display: none; }
   .trust { gap: 20px; padding: 14px 20px; }
-  .free-band, .features, .pricing, .testimonials, .cta-strip { padding: 64px 20px; }
+  .free-band, .features, .pricing, .testimonials, .cta-strip { padding: 56px 20px; }
   .p-grid { grid-template-columns: 1fr; }
   footer { padding: 24px 20px; flex-direction: column; align-items: flex-start; }
 }
@@ -497,7 +500,6 @@ footer {
   </a>
   <div class="nav-right">
     <a href="getting-started.html" class="nav-link">Free starter guide</a>
-    <a href="#" onclick="goStore(event)" class="nav-cta">Get started free</a>
   </div>
 </nav>
 
@@ -507,7 +509,7 @@ footer {
     <div class="hero-text">
       <div class="hero-badge">
         <div class="hero-badge-dot"></div>
-        Free plan — shift logging &amp; notes
+        Free to get started
       </div>
       <h1>The app NDIS sole traders <em>actually</em> use</h1>
       <p class="hero-sub">Log shifts, manage participants, and send compliant invoices — built for support workers, not accountants.</p>
@@ -552,7 +554,7 @@ footer {
 <!-- FREE CALLOUT -->
 <section class="free-band">
   <div class="free-band-inner">
-    <div class="free-chip">New — Free plan</div>
+    <div class="free-chip">Free forever</div>
     <h2>Get started. No commitment.</h2>
     <p>Log shifts and add notes, forever. When you're ready to invoice, compliance track, or manage multiple participants — upgrade in one tap.</p>
     <div class="dl-row">
