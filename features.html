@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Features — MyWattle</title>
+<meta name="description" content="Everything independent NDIS support workers need — shift logging, invoicing, participant management, compliance, and more. All in one app.">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-24WP7Z35Y3"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-24WP7Z35Y3');</script>
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '1870459937251118');
+fbq('track', 'PageView');
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --forest:      #1A3D2B;
+  --forest-mid:  #2D6A4F;
+  --forest-lite: #4A8A68;
+  --gold:        #C99618;
+  --gold-pale:   #FFF8E1;
+  --gold-bg:     rgba(201,150,24,0.12);
+  --sage:        #EAF1EB;
+  --cream:       #F8FAF8;
+  --surface:     #FFFFFF;
+  --ink:         #101C14;
+  --mid:         #4D6356;
+  --muted:       #8EA394;
+  --border:      #D2E2D7;
+}
+
+body {
+  font-family: 'DM Sans', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--ink);
+  -webkit-font-smoothing: antialiased;
+  line-height: 1.6;
+}
+
+/* NAV */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 40px; height: 60px;
+  background: rgba(26,61,43,0.96);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+.nav-logo { display: flex; align-items: center; gap: 9px; text-decoration: none; }
+.nav-mark {
+  width: 30px; height: 30px; border-radius: 8px;
+  background: var(--gold);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: 16px; font-weight: 800; color: var(--forest);
+}
+.nav-name { font-size: 18px; font-weight: 700; color: #fff; letter-spacing: -0.2px; }
+.nav-right { display: flex; align-items: center; gap: 12px; }
+.nav-home { font-size: 13px; font-weight: 500; color: rgba(255,255,255,0.7); text-decoration: none; }
+.nav-home:hover { color: #fff; }
+.nav-cta {
+  background: var(--gold); color: var(--forest);
+  font-size: 13px; font-weight: 700;
+  padding: 8px 20px; border-radius: 8px;
+  text-decoration: none;
+}
+
+/* HERO */
+.hero {
+  background: var(--forest);
+  padding: 110px 40px 80px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; top: -120px; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 500px;
+  background: radial-gradient(ellipse at center, rgba(201,150,24,0.13) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 20px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(34px, 5vw, 56px);
+  font-weight: 800; color: #fff;
+  line-height: 1.1; letter-spacing: -1.5px;
+  margin-bottom: 18px; text-wrap: balance;
+}
+.hero h1 em { font-style: normal; color: var(--gold); }
+.hero-sub {
+  font-size: 17px; color: rgba(255,255,255,0.55);
+  max-width: 500px; margin: 0 auto 40px;
+  line-height: 1.7;
+}
+.hero-dl {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; flex-wrap: wrap;
+}
+.dl-btn {
+  display: inline-flex; align-items: center; gap: 10px;
+  padding: 12px 22px; border-radius: 12px;
+  text-decoration: none; font-weight: 700;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.dl-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.dl-ios { background: #fff; color: var(--ink); }
+.dl-android { background: rgba(255,255,255,0.09); border: 1px solid rgba(255,255,255,0.2); color: #fff; }
+.dl-label-sub { display: block; font-size: 10px; font-weight: 400; opacity: 0.5; line-height: 1; margin-bottom: 2px; }
+.dl-label-main { display: block; font-size: 14px; font-weight: 700; line-height: 1; }
+
+/* SECTION WRAPPER */
+.section {
+  max-width: 1080px; margin: 0 auto;
+  padding: 80px 40px;
+}
+.section + .section { padding-top: 0; }
+.section-alt { background: var(--surface); }
+
+/* SECTION HEADER */
+.sec-head { text-align: center; margin-bottom: 56px; }
+.sec-eyebrow {
+  display: inline-block;
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 12px;
+}
+.sec-head h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(26px, 3.5vw, 40px);
+  font-weight: 800; color: var(--forest);
+  letter-spacing: -0.8px; line-height: 1.15; text-wrap: balance;
+}
+.sec-head p { font-size: 16px; color: var(--mid); max-width: 520px; margin: 14px auto 0; }
+
+/* FEATURE GRID */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 20px;
+}
+.feat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 28px 28px 24px;
+}
+.section-alt .feat-card { background: var(--cream); }
+.feat-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  background: var(--sage);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px;
+  margin-bottom: 16px;
+}
+.feat-card h3 { font-size: 16px; font-weight: 700; color: var(--ink); margin-bottom: 8px; }
+.feat-card p { font-size: 14px; color: var(--mid); line-height: 1.6; }
+.feat-tag {
+  display: inline-block; margin-top: 12px;
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+  color: var(--forest-mid); background: var(--sage);
+  padding: 3px 8px; border-radius: 5px;
+}
+
+/* BIG FEATURE ROW */
+.big-feat {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 40px; align-items: center;
+  margin-bottom: 64px;
+}
+.big-feat:last-child { margin-bottom: 0; }
+.big-feat.flip .big-feat-text { order: 2; }
+.big-feat.flip .big-feat-visual { order: 1; }
+.big-feat-text h3 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(22px, 2.5vw, 30px);
+  font-weight: 800; color: var(--forest);
+  letter-spacing: -0.5px; margin-bottom: 14px;
+  line-height: 1.2;
+}
+.big-feat-text p { font-size: 15px; color: var(--mid); margin-bottom: 16px; line-height: 1.7; }
+.feat-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+.feat-list li {
+  font-size: 14px; color: var(--mid);
+  display: flex; align-items: flex-start; gap: 10px;
+}
+.feat-list li::before {
+  content: '✓';
+  color: var(--forest-mid); font-weight: 700;
+  flex-shrink: 0; margin-top: 1px;
+}
+.big-feat-visual {
+  background: var(--sage);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  aspect-ratio: 4/3;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 64px;
+}
+
+/* CTA STRIP */
+.cta-strip {
+  background: var(--forest);
+  padding: 72px 40px;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.cta-strip::before {
+  content: '';
+  position: absolute; top: -100px; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(201,150,24,0.15) 0%, transparent 65%);
+  pointer-events: none;
+}
+.cta-strip h2 {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-size: clamp(26px, 4vw, 42px);
+  font-weight: 800; color: #fff;
+  letter-spacing: -1px; margin-bottom: 14px;
+  text-wrap: balance;
+}
+.cta-strip p { font-size: 16px; color: rgba(255,255,255,0.55); margin-bottom: 36px; }
+.cta-strip .hero-dl { position: relative; }
+
+/* FOOTER */
+footer {
+  background: var(--forest);
+  border-top: 1px solid rgba(255,255,255,0.08);
+  padding: 28px 40px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 12px;
+  font-size: 12px; color: rgba(255,255,255,0.3);
+}
+footer a { color: rgba(255,255,255,0.4); text-decoration: none; }
+footer a:hover { color: rgba(255,255,255,0.7); }
+.footer-links { display: flex; gap: 20px; }
+
+/* MOBILE */
+@media (max-width: 700px) {
+  nav { padding: 0 20px; }
+  .hero { padding: 90px 20px 60px; }
+  .section { padding: 60px 20px; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .big-feat { grid-template-columns: 1fr; }
+  .big-feat.flip .big-feat-text { order: 1; }
+  .big-feat.flip .big-feat-visual { order: 2; }
+  .big-feat-visual { aspect-ratio: 3/2; font-size: 48px; }
+  .cta-strip { padding: 56px 20px; }
+  footer { flex-direction: column; text-align: center; }
+  .nav-right .nav-home { display: none; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">
+    <div class="nav-mark">W</div>
+    <span class="nav-name">MyWattle</span>
+  </a>
+  <div class="nav-right">
+    <a href="index.html" class="nav-home">← Home</a>
+    <a href="https://apps.apple.com/au/app/mywattle/id6608978709" class="nav-cta">Download free</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow">Everything you need</div>
+  <h1>Built for the way<br>support workers <em>actually</em> work</h1>
+  <p class="hero-sub">No paperwork at midnight. No chasing invoices. No spreadsheets. Just the tools you need to do your job and get paid.</p>
+  <div class="hero-dl">
+    <a href="https://apps.apple.com/au/app/mywattle/id6608978709" class="dl-btn dl-ios">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      <span class="dl-label"><span class="dl-label-sub">Download on the</span><span class="dl-label-main">App Store</span></span>
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.seeyounexttime.projectwattle" class="dl-btn dl-android">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76c.3.17.64.2.96.08l12.45-7.19-2.68-2.69-10.73 9.8zm-1.7-20.1C1.2 3.96 1 4.34 1 4.81v14.38c0 .47.2.85.48 1.15l.07.06 8.06-8.06v-.19L1.48 3.6l-.01.06zM20.49 10.7l-2.29-1.32-2.99 2.99 2.99 2.99 2.31-1.33c.66-.38.66-1.95-.02-2.33zM4.14.24L16.59 7.43l-2.68 2.68L3.18.31C3.5.19 3.84.22 4.14.24z"/></svg>
+      <span class="dl-label"><span class="dl-label-sub">Get it on</span><span class="dl-label-main">Google Play</span></span>
+    </a>
+  </div>
+</div>
+
+<!-- CORE FEATURES GRID -->
+<div style="background: var(--surface);">
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-eyebrow">Core features</div>
+      <h2>Everything in one place</h2>
+      <p>From your first shift to your end-of-year records — MyWattle covers every part of the job.</p>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="feat-icon">⏱️</div>
+        <h3>Shift logging</h3>
+        <p>Log shifts manually or clock in and out in real time. Attach support categories, notes, and participant details to every entry.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🧾</div>
+        <h3>NDIS invoicing</h3>
+        <p>Generate professional PDF invoices with the correct NDIS line items, including STA, remote loadings, and provider travel. Email them directly from the app.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">👥</div>
+        <h3>Participant management</h3>
+        <p>Store participant details, NDIS numbers, plan dates, support categories, and service agreements — all in one place.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">📋</div>
+        <h3>Bulk invoice generation</h3>
+        <p>Create draft invoices for all uninvoiced shifts at once. One tap generates the whole batch — no repeating yourself for each participant.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">📊</div>
+        <h3>Timesheet export</h3>
+        <p>Export your shifts to a CSV spreadsheet for any date range. Share it with your accountant, support coordinator, or keep it for your own records.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🚗</div>
+        <h3>Provider travel & expenses</h3>
+        <p>Track kilometres, claim provider travel as a line item on invoices, and log work expenses separately for tax time.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🗂️</div>
+        <h3>Compliance documents</h3>
+        <p>Store service agreements, NDIS worker checks, and other compliance documents. Know exactly what's on file when an audit comes.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🔔</div>
+        <h3>Smart reminders</h3>
+        <p>Get notified 30 minutes before a shift, reminded at 9 pm if you have unsigned shifts, and warned 7 days before a participant's plan expires.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🏠</div>
+        <h3>Aged care support</h3>
+        <p>Wattle supports both NDIS and aged care clients. Toggle the care type per participant — aged care shifts and invoices show the right descriptions automatically.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- DEEP FEATURES: INVOICING & PARTICIPANTS -->
+<div style="background: var(--cream);">
+  <div class="section">
+
+    <div class="big-feat">
+      <div class="big-feat-text">
+        <div class="sec-eyebrow">Invoicing</div>
+        <h3>Send a professional invoice in under a minute</h3>
+        <p>Pick a participant, choose the shifts to include, and tap send. MyWattle fills in the correct NDIS support categories, calculates totals, and generates a clean PDF — ready to email straight from the app.</p>
+        <ul class="feat-list">
+          <li>All NDIS support categories including STA and remote loadings</li>
+          <li>Provider travel automatically added as a separate line item</li>
+          <li>Bulk generate invoices for multiple participants at once</li>
+          <li>Track invoice status — Draft, Sent, Paid</li>
+          <li>Email PDFs directly without leaving the app</li>
+        </ul>
+      </div>
+      <div class="big-feat-visual">🧾</div>
+    </div>
+
+    <div class="big-feat flip">
+      <div class="big-feat-text">
+        <div class="sec-eyebrow">Participants</div>
+        <h3>Know your participants, stay on top of their plans</h3>
+        <p>Every participant has their own profile with everything you need — NDIS number, plan dates, support categories, goals, and documents. MyWattle warns you when a plan is about to expire so nothing falls through the cracks.</p>
+        <ul class="feat-list">
+          <li>Plan expiry warnings — badge on card + 7-day notification</li>
+          <li>NDIS goal tracking — up to 5 goals per participant with On track, Needs attention, or Achieved status</li>
+          <li>Support category stored per participant — pre-filled on new shifts</li>
+          <li>Works for both NDIS and aged care participants</li>
+        </ul>
+      </div>
+      <div class="big-feat-visual">👥</div>
+    </div>
+
+    <div class="big-feat">
+      <div class="big-feat-text">
+        <div class="sec-eyebrow">Records & compliance</div>
+        <h3>Audit-ready records, always</h3>
+        <p>Every shift you log is timestamped and stored securely. Your compliance documents are one tap away. When the NDIS Quality and Safeguards Commission comes knocking, you'll have everything ready.</p>
+        <ul class="feat-list">
+          <li>Shift notes and support category logged per visit</li>
+          <li>Service agreements and NDIS worker checks stored in-app</li>
+          <li>Export full shift history as a spreadsheet any time</li>
+          <li>All data stored securely in Australia</li>
+        </ul>
+      </div>
+      <div class="big-feat-visual">📋</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- MINI FEATURES -->
+<div style="background: var(--surface);">
+  <div class="section">
+    <div class="sec-head">
+      <div class="sec-eyebrow">The details that matter</div>
+      <h2>Built for how support workers actually work</h2>
+    </div>
+    <div class="feat-grid">
+
+      <div class="feat-card">
+        <div class="feat-icon">📱</div>
+        <h3>No sign-up to get started</h3>
+        <p>Download and use the full app straight away. No account required to try — your data is saved automatically when you sign up later.</p>
+        <span class="feat-tag">30-day free trial</span>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🇦🇺</div>
+        <h3>Built for Australia</h3>
+        <p>NDIS pricing rates, Australian date and currency formats, and data stored on servers in Australia. Built specifically for the Australian NDIS system.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🌙</div>
+        <h3>Dark mode</h3>
+        <p>Follows your phone's system setting. Easy on the eyes for those late-night invoice runs.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">☁️</div>
+        <h3>Synced across devices</h3>
+        <p>Your shifts, participants, and invoices sync automatically. Switch between your phone and tablet without missing a thing.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">🔒</div>
+        <h3>Private by default</h3>
+        <p>Your participant data is private to you. We never sell your data or share it with third parties. Read our <a href="privacy.html" style="color:var(--forest-mid)">Privacy Policy</a>.</p>
+      </div>
+
+      <div class="feat-card">
+        <div class="feat-icon">📅</div>
+        <h3>Calendar view</h3>
+        <p>See all your logged shifts on a monthly calendar. Spot gaps and plan ahead at a glance.</p>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-strip">
+  <h2>Try it free — no sign-up needed</h2>
+  <p>Open the app and start straight away. No account required.</p>
+  <div class="hero-dl">
+    <a href="https://apps.apple.com/au/app/mywattle/id6608978709" class="dl-btn dl-ios">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      <span class="dl-label"><span class="dl-label-sub">Download on the</span><span class="dl-label-main">App Store</span></span>
+    </a>
+    <a href="https://play.google.com/store/apps/details?id=com.seeyounexttime.projectwattle" class="dl-btn dl-android">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M3.18 23.76c.3.17.64.2.96.08l12.45-7.19-2.68-2.69-10.73 9.8zm-1.7-20.1C1.2 3.96 1 4.34 1 4.81v14.38c0 .47.2.85.48 1.15l.07.06 8.06-8.06v-.19L1.48 3.6l-.01.06zM20.49 10.7l-2.29-1.32-2.99 2.99 2.99 2.99 2.31-1.33c.66-.38.66-1.95-.02-2.33zM4.14.24L16.59 7.43l-2.68 2.68L3.18.31C3.5.19 3.84.22 4.14.24z"/></svg>
+      <span class="dl-label"><span class="dl-label-sub">Get it on</span><span class="dl-label-main">Google Play</span></span>
+    </a>
+  </div>
+</div>
+
+<footer>
+  <span>&copy; 2026 MyWattle</span>
+  <div class="footer-links">
+    <a href="index.html">Home</a>
+    <a href="privacy.html">Privacy</a>
+    <a href="terms.html">Terms</a>
+  </div>
+</footer>
+
+</body>
+</html>
